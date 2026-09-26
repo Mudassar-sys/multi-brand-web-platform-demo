@@ -21,9 +21,8 @@ const { formId, successMessage, endpoint = '/api/lead', uploadEndpoint = '/api/u
   <form
     data-lead-form
     data-form-id={formId}
+    data-endpoint={endpoint}
     data-upload-endpoint={uploadEndpoint}
-    action={endpoint}
-    method="post"
     class={className}
   >
     <slot />

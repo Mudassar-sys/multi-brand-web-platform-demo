@@ -166,7 +166,7 @@ async function submit(form: HTMLFormElement): Promise<void> {
     delete data.attachment;
 
     say('Sending...', 'info');
-    const response = await fetch(form.action, {
+    const response = await fetch(form.dataset.endpoint ?? '/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(data),
