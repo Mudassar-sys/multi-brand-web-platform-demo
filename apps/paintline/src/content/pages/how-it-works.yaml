@@ -57,6 +57,8 @@ sections:
         answer: We need about 1.5 metres of clear floor in front of the wall. Furniture elsewhere can stay.
       - question: Does the wall need to be painted first?
         answer: Painted drywall is ideal. Bare or textured surfaces may need a primer coat, which we can apply.
+      - question: How do I look after the finished wall?
+        answer: Wait 48 hours, then wipe gently with a damp microfibre cloth. Avoid solvents and abrasive pads.
 
   - type: ctaBand
     heading: Send a photo, get a price range
