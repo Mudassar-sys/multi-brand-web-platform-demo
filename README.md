@@ -11,7 +11,7 @@ Both brands are fictional and marked "Demo brand" in their footers.
 | --- | --- |
 | Kestrel Machine Co. (live) | https://kestrel-demo-pi.vercel.app |
 | Paintline Murals (live) | https://paintline-demo.vercel.app |
-| Sample landing page PR made by `/new-landing-page` | https://github.com/Mudassar-sys/multi-brand-web-platform-demo/pull/5 (live page: https://kestrel-demo-pi.vercel.app/lp/open-house-demo-day) |
+| Sample landing page PR made by `/new-landing-page` | [PR 5](../../pull/5) (live page: https://kestrel-demo-pi.vercel.app/lp/open-house-demo-day) |
 | Proof screenshots | [proof/](./proof) |
 | Owner guide | [docs/OWNER-RUNBOOK.md](./docs/OWNER-RUNBOOK.md) |
 
