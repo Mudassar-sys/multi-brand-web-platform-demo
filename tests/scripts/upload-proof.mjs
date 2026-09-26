@@ -1,7 +1,6 @@
 // Screenshot proof for the 10 MB upload limit on a Paintline preview.
 //   node tests/scripts/upload-proof.mjs <preview-url> <out-dir>
-// Chrome automation cannot attach files over 10 MB, so the 11 MB cases use
-// Playwright's Chromium; the 9 MB success is also covered by preview-checks.
+// Uses Playwright's Chromium. The 9 MB success case is covered by preview-checks.
 import { chromium } from '@playwright/test';
 
 const [base, out] = process.argv.slice(2);
