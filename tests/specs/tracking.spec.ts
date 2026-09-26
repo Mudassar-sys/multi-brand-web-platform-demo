@@ -100,7 +100,7 @@ test.describe('tracking contract', () => {
       .toBeGreaterThan(0);
   });
 
-  test('no Google Ads requests while browsing and converting', async ({ page }, testInfo) => {
+  test('no Google Ads conversion requests while browsing and converting', async ({ page }, testInfo) => {
     test.skip(expectedSiteEnv === 'production', 'This check is for previews');
     const brand = brands[brandOf(testInfo)];
     const { adsConversionId } = expectedTags(brandOf(testInfo));
@@ -122,6 +122,6 @@ test.describe('tracking contract', () => {
     // On production the Ads tag sent its hits within 3 s of generate_lead (proof/13-tracking-network.txt).
     await page.waitForTimeout(5_000);
 
-    expect(adsRequests, 'Google Ads requests seen on a preview').toEqual([]);
+    expect(adsRequests, 'Google Ads conversion requests seen on a preview').toEqual([]);
   });
 });

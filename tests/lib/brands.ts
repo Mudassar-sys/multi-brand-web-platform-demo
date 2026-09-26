@@ -62,5 +62,7 @@ export function redirectsCsv(brand: Brand): string {
 /**
  * URLs that would mean a Google Ads conversion or remarketing hit. Each pattern is listed in
  * docs/SOURCES.md ("Google endpoints matched by the tracking tests") with its source.
+ * Whole Ads hosts are not matched: after a gclid landing the Conversion Linker also calls
+ * www.googleadservices.com (pagead/set_partitioned_cookie), and that is not a conversion.
  */
-export const ADS_REQUEST = /googleadservices\.com|googleads\.g\.doubleclick\.net|\/pagead\/(conversion|viewthroughconversion)|google\.com\/ads\/ga-audiences/;
+export const ADS_REQUEST = /\/pagead\/(conversion|viewthroughconversion|1p-conversion)\/|google\.com\/ads\/ga-audiences/;
