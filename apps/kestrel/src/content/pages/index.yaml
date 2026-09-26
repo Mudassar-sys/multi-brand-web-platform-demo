@@ -90,3 +90,6 @@ sections:
     primaryCta: { label: Book a demo, href: /contact }
     secondaryCta: { label: View specs, href: /machines }
     tone: accent
+
+  - type: carousel
+    heading: This section type does not exist in the Kestrel catalog
