@@ -8,7 +8,9 @@ The site already does its part of the tracking contract (tested on every preview
    regions, `wait_for_update: 500`, `url_passthrough` and `ads_data_redaction`.
 3. The GTM snippet loads only when the Vercel project has `PUBLIC_GTM_ID` set.
 4. After the server accepts a lead, the page pushes
-   `{ event: 'generate_lead', form_id, brand, lead_provider, site_env }`.
+   `{ event: 'generate_lead', form_id, brand, lead_provider, site_env }`. This `site_env`
+   comes from the lead endpoint, which reads Vercel's `VERCEL_ENV` at request time. A local
+   run therefore pushes `development` unless `VERCEL_ENV` is set, and the Ads tag stays blocked.
 
 Your job in GTM is to map that one event to GA4 and Google Ads, and to make sure the Ads
 conversion can never fire outside production. Names below are the exact names used in the
@@ -20,6 +22,15 @@ GTM interface; each is sourced in [SOURCES.md](./SOURCES.md) (Google tags sectio
 - A Google Ads conversion action for leads. Copy its **Conversion ID** and
   **Conversion Label**.
 - A GTM **web** container per brand. Copy the container ID (`GTM-...`).
+
+## Importable version
+
+[gtm-container.json](./gtm-container.json) is an export of the demo container with everything
+below already in it. The demo uses one container for both brands: `brand` is in the
+`dataLayer`. To reuse it, in GTM go to Admin > Import Container, choose the file, pick a
+workspace and choose **Overwrite** or **Merge**. Then replace the GA4 Measurement ID in the two
+GA4 tags and the two `Const - Ads` values with your own before you publish. The file holds only
+public tag IDs.
 
 ## 1. Variables
 
@@ -91,14 +102,14 @@ Previews then load GTM too, which is how step 5 works; the exception keeps Ads s
 
 ## 7. Record the IDs for the tests, then re-run them
 
-In `tests/tracking-expectations.json`, fill in the brand's `gtmId` (`GTM-...`) and
-`ga4MeasurementId` (`G-...`) in a PR. From then on the tracking test for that brand is strict
+In `tests/tracking-expectations.json`, fill in the brand's `gtmId` (`GTM-...`),
+`ga4MeasurementId` (`G-...`) and `adsConversionId` (the Google Ads Conversion ID) in a PR. The
+preview Ads check also fails on any request whose URL carries that Conversion ID. From then on the tracking test for that brand is strict
 ([proof](../proof/15-strict-tracking-check.txt)):
 
 - the GTM snippet must be on the page with that container ID;
 - `gtm.js` for that ID must return status 200;
-- after **Accept all**, a GA4 request must reach `*.google-analytics.com` and a Google tag
-  request must carry the Measurement ID.
+- after **Accept all**, a GA4 request to `*.google-analytics.com` must carry the Measurement ID.
 
 Any missing piece fails the preview check. The test is also strict whenever a page renders a
 GTM snippet, so setting `PUBLIC_GTM_ID` without recording the GA4 ID fails too. With neither,

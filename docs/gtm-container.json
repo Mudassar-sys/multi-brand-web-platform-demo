@@ -1,0 +1,235 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-09-26 12:00:00",
+  "containerVersion": {
+    "path": "accounts/6379030892/containers/265270343/versions/0",
+    "accountId": "6379030892",
+    "containerId": "265270343",
+    "containerVersionId": "0",
+    "container": {
+      "path": "accounts/6379030892/containers/265270343",
+      "accountId": "6379030892",
+      "containerId": "265270343",
+      "name": "Multi-brand demo",
+      "publicId": "GTM-NGVNJ7BB",
+      "usageContext": ["WEB"]
+    },
+    "tag": [
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "tagId": "1",
+        "name": "Google Tag - GA4",
+        "type": "googtag",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "tagId", "value": "G-RJ492TFLKD" }
+        ],
+        "firingTriggerId": ["2147479573"],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": { "type": "MAP" },
+        "consentSettings": { "consentStatus": "NOT_SET" }
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "tagId": "2",
+        "name": "Conversion Linker",
+        "type": "gclidw",
+        "parameter": [
+          { "type": "BOOLEAN", "key": "enableCrossDomain", "value": "false" },
+          { "type": "BOOLEAN", "key": "enableUrlPassthrough", "value": "false" },
+          { "type": "BOOLEAN", "key": "enableCookieOverrides", "value": "false" }
+        ],
+        "firingTriggerId": ["2147479553"],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": { "type": "MAP" },
+        "consentSettings": { "consentStatus": "NOT_SET" }
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "tagId": "3",
+        "name": "GA4 Event - generate_lead",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "BOOLEAN", "key": "sendEcommerceData", "value": "false" },
+          { "type": "TEMPLATE", "key": "eventName", "value": "generate_lead" },
+          { "type": "TEMPLATE", "key": "measurementIdOverride", "value": "G-RJ492TFLKD" },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "form_id" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - form_id}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "brand" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - brand}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "lead_source" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - lead_provider}}" }
+                ]
+              }
+            ]
+          }
+        ],
+        "firingTriggerId": ["10"],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": { "type": "MAP" },
+        "consentSettings": { "consentStatus": "NOT_SET" }
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "tagId": "4",
+        "name": "Google Ads - Lead conversion",
+        "type": "awct",
+        "parameter": [
+          { "type": "BOOLEAN", "key": "enableNewCustomerReporting", "value": "false" },
+          { "type": "BOOLEAN", "key": "enableConversionLinker", "value": "true" },
+          { "type": "BOOLEAN", "key": "enableProductReporting", "value": "false" },
+          { "type": "BOOLEAN", "key": "enableEnhancedConversion", "value": "false" },
+          { "type": "TEMPLATE", "key": "conversionId", "value": "{{Const - Ads Conversion ID}}" },
+          { "type": "TEMPLATE", "key": "conversionLabel", "value": "{{Const - Ads Conversion Label}}" },
+          { "type": "BOOLEAN", "key": "rdp", "value": "false" }
+        ],
+        "firingTriggerId": ["10"],
+        "blockingTriggerId": ["11"],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": { "type": "MAP" },
+        "consentSettings": { "consentStatus": "NOT_SET" }
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "triggerId": "10",
+        "name": "CE - generate_lead",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "generate_lead" }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "triggerId": "11",
+        "name": "Block - not production",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": ".*" }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{DLV - site_env}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "production" },
+              { "type": "BOOLEAN", "key": "negate", "value": "true" }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "variableId": "20",
+        "name": "DLV - site_env",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "site_env" }
+        ]
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "variableId": "21",
+        "name": "DLV - brand",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "brand" }
+        ]
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "variableId": "22",
+        "name": "DLV - form_id",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "form_id" }
+        ]
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "variableId": "23",
+        "name": "DLV - lead_provider",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "lead_provider" }
+        ]
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "variableId": "24",
+        "name": "Const - Ads Conversion ID",
+        "type": "c",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "value", "value": "16832482446" }
+        ]
+      },
+      {
+        "accountId": "6379030892",
+        "containerId": "265270343",
+        "variableId": "25",
+        "name": "Const - Ads Conversion Label",
+        "type": "c",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "value", "value": "demoLeadTest" }
+        ]
+      }
+    ],
+    "builtInVariable": [
+      { "accountId": "6379030892", "containerId": "265270343", "type": "PAGE_URL", "name": "Page URL" },
+      { "accountId": "6379030892", "containerId": "265270343", "type": "PAGE_HOSTNAME", "name": "Page Hostname" },
+      { "accountId": "6379030892", "containerId": "265270343", "type": "PAGE_PATH", "name": "Page Path" },
+      { "accountId": "6379030892", "containerId": "265270343", "type": "REFERRER", "name": "Referrer" },
+      { "accountId": "6379030892", "containerId": "265270343", "type": "EVENT", "name": "Event" }
+    ]
+  }
+}

@@ -12,7 +12,7 @@ Both brands are fictional and marked "Demo brand" in their footers.
 | Kestrel Machine Co. (live) | https://kestrel-demo-pi.vercel.app |
 | Paintline Murals (live) | https://paintline-demo.vercel.app |
 | Sample landing page PR made by `/new-landing-page` | [PR 5](../../pull/5) (live page: https://kestrel-demo-pi.vercel.app/lp/open-house-demo-day) |
-| Tracking proof (previews) | [proof/14-preview-tracking-checks.txt](./proof/14-preview-tracking-checks.txt) |
+| Tracking proof (previews) | [proof/13a-preview-gtm-loaded-ads-blocked.jpg](./proof/13a-preview-gtm-loaded-ads-blocked.jpg), [proof/13-tracking-network.txt](./proof/13-tracking-network.txt) |
 | Strict GTM and GA4 check | [proof/15-strict-tracking-check.txt](./proof/15-strict-tracking-check.txt) |
 | Proof screenshots | [proof/](./proof) |
 | Owner guide | [docs/OWNER-RUNBOOK.md](./docs/OWNER-RUNBOOK.md) |
@@ -50,9 +50,13 @@ tests/                               Playwright: tracking, forms, uploads, redir
 .github/workflows                    ci, preview-checks, production-checks
 ```
 
-GA4 and Google Ads tags load through a GTM container once its ID is set on each Vercel project
-([docs/GTM-SETUP.md](./docs/GTM-SETUP.md)). No container is connected in this demo yet, so the
-sites currently send no Google tag requests at all.
+GTM and GA4 are connected on both brands (container `GTM-NGVNJ7BB`, GA4 `G-RJ492TFLKD`,
+importable as [docs/gtm-container.json](./docs/gtm-container.json)). On previews the Google Ads
+conversion tag is blocked: after a successful test lead, zero Google Ads conversion requests are
+sent ([proof](./proof/13a-preview-gtm-loaded-ads-blocked.jpg),
+[network log](./proof/13-tracking-network.txt)). The demo Ads tag uses a placeholder conversion
+label with no conversion action behind it, so nothing is recorded in Google Ads. What this proves
+is the firing rule.
 
 Details: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md). Tag setup for a real container:
 [docs/GTM-SETUP.md](./docs/GTM-SETUP.md). Every technical claim and its official source:

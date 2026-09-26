@@ -17,6 +17,8 @@ export const GOOGLE_TAG_REQUEST =
 export interface ExpectedTags {
   gtmId: string;
   ga4MeasurementId: string;
+  /** Google Ads conversion ID of the lead conversion tag (public, part of every Ads hit URL). */
+  adsConversionId: string;
 }
 
 /**
@@ -28,6 +30,7 @@ export function expectedTags(brand: Brand): ExpectedTags {
   return {
     gtmId: process.env.EXPECTED_GTM_ID || file[brand]?.gtmId || '',
     ga4MeasurementId: process.env.EXPECTED_GA4_ID || file[brand]?.ga4MeasurementId || '',
+    adsConversionId: file[brand]?.adsConversionId || '',
   };
 }
 

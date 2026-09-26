@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { ADS_REQUEST, brandOf, brands, expectedSiteEnv } from '../lib/brands';
-import { dismissConsent, fillRequired, HUMAN_DELAY_MS } from '../lib/forms';
+import { dataLayerEvents, dismissConsent, fillRequired, HUMAN_DELAY_MS } from '../lib/forms';
 import { expectedTags, GA4_HIT, GOOGLE_TAG_REQUEST, renderedGtm } from '../lib/google-tags';
 
 test.describe('tracking contract', () => {
@@ -91,24 +91,23 @@ test.describe('tracking contract', () => {
     expect(expected.ga4MeasurementId, 'GA4 Measurement ID set in tests/tracking-expectations.json').toMatch(/^G-[A-Z0-9]+$/);
     await dismissConsent(page, 'granted');
     await page.goto(brand.formPath);
+    // Observed live: GA4 hits carry the Measurement ID in their query (docs/SOURCES.md).
     await expect
-      .poll(() => requests.filter((url) => GA4_HIT.test(url)).length, {
-        message: 'GA4 request to *.google-analytics.com after Accept all',
+      .poll(() => requests.filter((url) => GA4_HIT.test(url) && url.includes(expected.ga4MeasurementId)).length, {
+        message: `GA4 request to *.google-analytics.com carrying ${expected.ga4MeasurementId} after Accept all`,
         timeout: 15_000,
       })
       .toBeGreaterThan(0);
-    expect(
-      requests.some((url) => url.includes(expected.ga4MeasurementId)),
-      'a Google tag request carries the expected GA4 Measurement ID',
-    ).toBe(true);
   });
 
   test('no Google Ads requests while browsing and converting', async ({ page }, testInfo) => {
     test.skip(expectedSiteEnv === 'production', 'This check is for previews');
     const brand = brands[brandOf(testInfo)];
+    const { adsConversionId } = expectedTags(brandOf(testInfo));
     const adsRequests: string[] = [];
     page.on('request', (req) => {
-      if (ADS_REQUEST.test(req.url())) adsRequests.push(req.url());
+      const url = req.url();
+      if (ADS_REQUEST.test(url) || (adsConversionId && url.includes(adsConversionId))) adsRequests.push(url);
     });
 
     await page.goto(`/?gclid=Ads-Check&utm_source=google&utm_medium=cpc`);
@@ -118,7 +117,10 @@ test.describe('tracking contract', () => {
     await page.waitForTimeout(HUMAN_DELAY_MS);
     await form.locator('[type="submit"]').click();
     await expect(page.locator('[data-form-receipt]')).toBeVisible();
+    expect(await dataLayerEvents(page), 'the lead event fired').toContain('generate_lead');
     await page.waitForLoadState('networkidle');
+    // On production the Ads tag sent its hits within 3 s of generate_lead (proof/13-tracking-network.txt).
+    await page.waitForTimeout(5_000);
 
     expect(adsRequests, 'Google Ads requests seen on a preview').toEqual([]);
   });
