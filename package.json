@@ -25,11 +25,5 @@
     "tsx": "4.23.15",
     "turbo": "2.11.4",
     "yaml": "2.9.1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp"
-    ]
   }
 }
