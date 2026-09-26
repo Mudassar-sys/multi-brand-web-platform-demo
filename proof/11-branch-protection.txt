@@ -1,12 +1,12 @@
 Branch protection on main (GitHub REST, 26 Sep 2026)
 
-$ gh api repos/Mudassar-sys/multi-brand-web-platform-demo/branches/main/protection
+$ gh api repos/<owner>/multi-brand-web-platform-demo/branches/main/protection
 {"allow_deletions":false,"allow_force_pushes":false,"enforce_admins":true,"required_pull_request_reviews":{"required_approving_review_count":0},"required_status_checks":{"contexts":["ci","preview-checks/kestrel","preview-checks/paintline"],"strict":false}}
 
 $ git push origin HEAD:main   (direct push by the repository admin)
   remote: error: GH006: Protected branch update failed for refs/heads/main.        
   remote: 
   remote: - 3 of 3 required status checks have not succeeded: 2 expected.        
-  To https://github.com/Mudassar-sys/multi-brand-web-platform-demo.git
+  To https://github.com/<owner>/multi-brand-web-platform-demo.git
    ! [remote rejected] HEAD -> main (protected branch hook declined)
-  error: failed to push some refs to 'https://github.com/Mudassar-sys/multi-brand-web-platform-demo.git'
+  error: failed to push some refs to 'https://github.com/<owner>/multi-brand-web-platform-demo.git'
