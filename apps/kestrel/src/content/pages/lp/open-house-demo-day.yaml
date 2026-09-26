@@ -1,0 +1,83 @@
+title: Open House Demo Day at the Kestrel showroom
+description: Watch the KL-160 and KL-250 cut real parts and get your own drawing programmed on the spot. Saturday, 14 November, 9:00 am to 2:00 pm. Book a time.
+kind: landing
+noindex: true
+sections:
+  - type: hero
+    eyebrow: Showroom open house
+    heading: Open House Demo Day
+    subheading: Watch the KL-160 and KL-250 cut real parts, bring a drawing of a part you turn today to have it programmed on the spot, and talk to an applications engineer.
+    primaryCta: { label: Book a time, href: '#start' }
+    secondaryCta: { label: See the agenda, href: '#agenda' }
+    highlights:
+      - { label: Date, value: 'Saturday, 14 November' }
+      - { label: Time, value: 9:00 am to 2:00 pm }
+      - { label: Coffee and lunch, value: Provided }
+    visual: lathe
+
+  - type: featureGrid
+    heading: What you can do on the day
+    columns: 3
+    features:
+      - icon: cog
+        title: Watch real parts cut
+        body: See the KL-160 and KL-250 cut real parts on the showroom floor.
+      - icon: file-text
+        title: Bring your own drawing
+        body: Bring a drawing of a part you turn today and have it programmed on the spot.
+      - icon: wrench
+        title: Talk to an applications engineer
+        body: Ask about your parts, delivery, training and financing.
+
+  - type: eventDetails
+    id: agenda
+    heading: Agenda
+    date: Saturday, 14 November
+    time: 9:00 am to 2:00 pm
+    location:
+      name: Kestrel showroom
+      address: 100 Example Parkway, Suite B
+    agenda:
+      - time: 9:00 am
+        title: Doors open and coffee
+      - time: 10:00 am
+        title: Live cutting on the KL-250
+      - time: 11:30 am
+        title: Bring-your-drawing sessions
+        body: Bring a drawing of a part you turn today and we program it on the spot.
+      - time: 12:30 pm
+        title: Lunch
+      - time: 1:00 pm
+        title: Delivery, training and financing questions
+    cta: { label: Book a time, href: '#start' }
+    note: Coffee and lunch are provided. Slots are limited, so book a time with the form.
+
+  - type: leadForm
+    id: start
+    eyebrow: Slots are limited
+    heading: Book your time at the open house
+    intro: Pick the part of the day you want to see. If you are bringing a drawing, tell us the part and material in the message.
+    formId: lp-open-house-demo-day
+    fields: [lastName, company, phone, interest, message]
+    interestLabel: What time would you like to come?
+    interestOptions:
+      - 9:00 am, doors open and coffee
+      - 10:00 am, live cutting on the KL-250
+      - 11:30 am, bring-your-drawing session
+      - 1:00 pm, delivery, training and financing
+    submitLabel: Book my time
+    successMessage: Thanks. We have your request and will be in touch to confirm your time slot.
+    points:
+      - Watch the KL-160 and KL-250 cut real parts
+      - Get your own drawing programmed on the spot
+      - Coffee and lunch provided
+
+  - type: faq
+    heading: Before you come
+    items:
+      - question: Do I need to bring anything?
+        answer: Only if you want a part programmed. Bring a drawing of a part you turn today to the 11:30 am session.
+      - question: Is food provided?
+        answer: Yes. Coffee is ready when doors open at 9:00 am and lunch is at 12:30 pm.
+      - question: Can I come without booking?
+        answer: Slots are limited, so please book a time with the form before you come.
