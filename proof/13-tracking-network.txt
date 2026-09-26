@@ -1,0 +1,122 @@
+Google tag network log: GTM and GA4 live, Google Ads conversion blocked on previews
+Date: 26 Sep 2026. Container GTM-NGVNJ7BB (version 2), GA4 G-RJ492TFLKD, Ads Conversion ID 16832482446.
+
+How this was captured
+  Playwright Chromium: open the landing page, click Accept all, open /contact, submit a test lead
+  (first name "Preview", tracking-proof@example.com), wait for the receipt, then 5 s more.
+  Every request to a Google host is listed as METHOD host/path. Query strings are stripped. The
+  only values shown are the event name (en), the consent state (gcs, e.g. G111 = ad_storage and
+  analytics_storage granted) and which public ID the URL carries. No cookie values anywhere.
+  Tags in <> mark: "carries <ID>", "GA4 hit" (GA4_HIT in tests/lib/google-tags.ts) and
+  "ADS CONVERSION" (ADS_REQUEST in tests/lib/brands.ts). A request listed twice with FAILED
+  net::ERR_ABORTED is Chromium aborting a beacon on navigation or a tag retry; its twin was sent.
+
+== 1. Previews of PR #9 (site_env preview): Ads conversion blocked
+
+# Kestrel preview (PR #9), landing with a gclid https://kestrel-demo-9in7cse9e-<team>.vercel.app  (2026-09-26T13:03:21.443Z)
+# dataLayer[0]: {"site_env":"preview","brand":"kestrel"}
+# dataLayer events: gtag:consent:default | gtag:consent:default | gtag:set:url_passthrough | gtag:set:ads_data_redaction | gtag:consent:update | gtm.js | gtm.dom | gtm.load | gtm.formInteract | gtm.formInteract | gtm.formSubmit | generate_lead
+# receipt visible: true
+   339ms [load] GET www.googletagmanager.com/gtm.js
+  1198ms [load] GET www.googletagmanager.com/gtag/js  <carries G-RJ492TFLKD>
+  1709ms [load] POST pagead2.googlesyndication.com/ccm/collect  event=page_view  consent=G101
+  2130ms [load] POST pagead2.googlesyndication.com/ccm/collect  event=page_view  consent=G101  FAILED net::ERR_ABORTED
+  2343ms [load] POST www.google-analytics.com/g/collect  event=page_view  consent=G101  <carries G-RJ492TFLKD GA4 hit>
+  2731ms [load] POST www.google-analytics.com/g/collect  event=page_view  consent=G101  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+  4411ms [accept] POST www.google.com/ccm/collect  event=consent_update  consent=G111
+  4411ms [accept] GET www.googleadservices.com/pagead/set_partitioned_cookie  event=consent_update  consent=G111
+  4411ms [accept] POST ad.doubleclick.net/ccm/s/collect
+  4836ms [accept] POST www.google.com/ccm/collect  event=consent_update  consent=G111  FAILED net::ERR_ABORTED
+  5101ms [accept] GET www.googleadservices.com/pagead/set_partitioned_cookie  event=consent_update  consent=G111  FAILED net::ERR_ABORTED
+  5145ms [accept] POST ad.doubleclick.net/ccm/s/collect  FAILED net::ERR_ABORTED
+  7067ms [contact] GET www.googletagmanager.com/gtm.js
+  7089ms [contact] GET www.googletagmanager.com/gtag/js  <carries G-RJ492TFLKD>
+  7090ms [contact] POST www.google.com/ccm/collect  event=page_view  consent=G111
+  7247ms [contact] POST www.google.com/ccm/collect  event=page_view  consent=G111  FAILED net::ERR_ABORTED
+  7489ms [contact] POST www.google-analytics.com/g/collect  event=page_view  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+  7644ms [contact] POST www.google-analytics.com/g/collect  event=page_view  consent=G111  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+ 11399ms [submit] POST www.google-analytics.com/g/collect  event=form_start  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+ 11622ms [submit] POST www.google-analytics.com/g/collect  event=form_start  consent=G111  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+ 16411ms [submit] POST www.google-analytics.com/g/collect  event=generate_lead  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+
+# Paintline preview (PR #9), landing with a gclid https://paintline-demo-77qew7sue-<team>.vercel.app  (2026-09-26T13:03:39.160Z)
+# dataLayer[0]: {"site_env":"preview","brand":"paintline"}
+# dataLayer events: gtag:consent:default | gtag:consent:default | gtag:consent:default | gtag:set:url_passthrough | gtag:set:ads_data_redaction | gtag:consent:update | gtm.js | gtm.dom | gtm.load | gtm.formInteract | gtm.formInteract | gtm.formSubmit | generate_lead | gtm.scrollDepth
+# receipt visible: true
+   417ms [load] GET www.googletagmanager.com/gtm.js
+  1358ms [load] GET www.googletagmanager.com/gtag/js  <carries G-RJ492TFLKD>
+  1862ms [load] POST pagead2.googlesyndication.com/ccm/collect  event=page_view  consent=G100
+  2295ms [load] POST pagead2.googlesyndication.com/ccm/collect  event=page_view  consent=G100  FAILED net::ERR_ABORTED
+  2499ms [load] POST www.google-analytics.com/g/collect  event=page_view  consent=G100  <carries G-RJ492TFLKD GA4 hit>
+  2866ms [load] POST www.google-analytics.com/g/collect  event=page_view  consent=G100  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+  4594ms [accept] POST www.google.com/ccm/collect  event=consent_update  consent=G111
+  4594ms [accept] GET www.googleadservices.com/pagead/set_partitioned_cookie  event=consent_update  consent=G111
+  4595ms [accept] POST ad.doubleclick.net/ccm/s/collect
+  4937ms [accept] POST ad.doubleclick.net/ccm/s/collect  FAILED net::ERR_ABORTED
+  4947ms [accept] GET www.googleadservices.com/pagead/set_partitioned_cookie  event=consent_update  consent=G111  FAILED net::ERR_ABORTED
+  4996ms [accept] POST www.google.com/ccm/collect  event=consent_update  consent=G111  FAILED net::ERR_ABORTED
+  7232ms [contact] GET www.googletagmanager.com/gtm.js
+  7268ms [contact] GET www.googletagmanager.com/gtag/js  <carries G-RJ492TFLKD>
+  7269ms [contact] POST www.google.com/ccm/collect  event=page_view  consent=G111
+  7454ms [contact] POST www.google.com/ccm/collect  event=page_view  consent=G111  FAILED net::ERR_ABORTED
+  7526ms [contact] POST www.google-analytics.com/g/collect  event=page_view  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+  7752ms [contact] POST www.google-analytics.com/g/collect  event=page_view  consent=G111  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+ 11475ms [submit] POST www.google-analytics.com/g/collect  event=form_start  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+ 11505ms [submit] POST www.google-analytics.com/g/collect  event=generate_lead  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+ 11650ms [submit] POST www.google-analytics.com/g/collect  event=form_start  consent=G111  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+ 11653ms [submit] POST www.google-analytics.com/g/collect  event=generate_lead  consent=G111  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+ 16509ms [submit] POST www.google-analytics.com/g/collect  event=scroll  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+ 16667ms [submit] POST www.google-analytics.com/g/collect  event=scroll  consent=G111  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+
+Result on both previews: GTM loaded after the consent default; after Accept all every GA4 hit
+carried G-RJ492TFLKD; generate_lead reached the dataLayer and GA4; ZERO requests tagged ADS
+CONVERSION and ZERO requests carrying 16832482446.
+
+Not conversions (seen on previews, not matched by the check):
+  www.googleadservices.com/pagead/set_partitioned_cookie: sent right after Accept all on a
+    landing URL with a gclid, before any lead, without the Conversion ID. Conversion Linker
+    behaviour (docs/SOURCES.md, "Google endpoints matched by the tracking tests").
+  */ccm/collect on www.google.com, pagead2.googlesyndication.com, ad.doubleclick.net: sent by
+    the Google tag on page_view and consent_update, before any lead, without the Conversion ID.
+  google.com/ads/ga-audiences: not sent at all.
+
+== 2. Same flow in the real Chrome browser (screenshots in proof/13a)
+  Read from the page with performance.getEntriesByType("resource"), host/path only:
+  Kestrel preview /contact:
+    www.googletagmanager.com/gtm.js       id GTM-NGVNJ7BB
+    www.googletagmanager.com/gtag/js      id G-RJ492TFLKD
+    www.google.com/ccm/collect            event page_view      consent G111
+    www.google-analytics.com/g/collect    tid G-RJ492TFLKD  event page_view      consent G111
+    www.google-analytics.com/g/collect    tid G-RJ492TFLKD  event form_start     consent G111
+    www.google-analytics.com/g/collect    tid G-RJ492TFLKD  event generate_lead  consent G111
+  Paintline preview /contact:
+    www.googletagmanager.com/gtm.js       id GTM-NGVNJ7BB
+    www.googletagmanager.com/gtag/js      id G-RJ492TFLKD
+    www.google.com/ccm/collect            event page_view      consent G111
+    www.google-analytics.com/g/collect    tid G-RJ492TFLKD  event page_view      consent G111
+    www.google-analytics.com/g/collect    tid G-RJ492TFLKD  event form_start     consent G111
+    www.google-analytics.com/g/collect    tid G-RJ492TFLKD  event generate_lead  consent G111
+  The extension network reader found no request matching "16832482446", "googleadservices"
+  or "googleads" on either page.
+
+== 3. Reference: what an Ads conversion looks like when site_env is production
+  A local build with VERCEL_ENV=production, before merge, to learn the real Ads request URLs
+  that the preview check must catch. Only the lead submission part is shown.
+
+# Local Kestrel build, VERCEL_ENV and PUBLIC_VERCEL_ENV set to production, http://127.0.0.1:4411  (2026-09-26T12:46:03.536Z)
+# dataLayer[0]: {"site_env":"production","brand":"kestrel"}
+# dataLayer events: gtag:consent:default | gtag:consent:default | gtag:set:url_passthrough | gtag:set:ads_data_redaction | gtag:consent:update | gtm.js | gtm.dom | gtm.load | gtm.formInteract | gtm.formInteract | gtm.formSubmit | generate_lead
+# receipt visible: true
+ 19758ms [submit] GET www.googletagmanager.com/gtag/destination  <carries 16832482446>
+ 19758ms [submit] POST www.google-analytics.com/g/collect  <carries G-RJ492TFLKD GA4 hit>
+ 19925ms [submit] POST www.google-analytics.com/g/collect  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+ 20491ms [submit] GET www.googleadservices.com/pagead/conversion/16832482446/  <carries 16832482446 ADS CONVERSION>
+ 20963ms [submit] POST googleads.g.doubleclick.net/pagead/viewthroughconversion/16832482446/  <carries 16832482446 ADS CONVERSION>
+ 22476ms [submit] GET www.google.com/pagead/1p-conversion/16832482446/  <carries 16832482446 ADS CONVERSION>
+ 22477ms [submit] GET www.google.com.pk/pagead/1p-conversion/16832482446/  <carries 16832482446 ADS CONVERSION>
+ 22478ms [submit] GET www.google.com.pk/pagead/1p-conversion/16832482446/  <carries 16832482446 ADS CONVERSION>  FAILED net::ERR_ABORTED
+ 24762ms [submit] POST www.google-analytics.com/g/collect  <carries G-RJ492TFLKD GA4 hit>
+
+  The Ads tag loaded its destination (gtag/destination for AW-16832482446) and sent the
+  conversion to /pagead/conversion/, /pagead/viewthroughconversion/ and /pagead/1p-conversion/,
+  all carrying 16832482446. Every one of them is matched by the preview check.
