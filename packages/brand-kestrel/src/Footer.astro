@@ -1,5 +1,6 @@
 ---
 import type { BrandConfig } from '@platform/ui-core/brand';
+import { copyrightLine } from '@platform/ui-core/legal';
 import Container from '@platform/ui-core/primitives/Container.astro';
 import Logo from './Logo.astro';
 
@@ -7,7 +8,8 @@ interface Props {
   brand: BrandConfig;
 }
 const { brand } = Astro.props;
-const year = new Date().getFullYear();
+// Built as one string so the year, name and sentence can never run together.
+const legal = `${copyrightLine(brand.name)} Demo brand: a fictional company for a platform demonstration. Nothing on this site is for sale.`;
 ---
 
 <footer class="bg-inverse text-on-inverse" data-tone="inverse">
@@ -46,10 +48,7 @@ const year = new Date().getFullYear();
   </Container>
   <div class="border-line border-t">
     <Container width="wide" class="text-ink-muted flex flex-col gap-3 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
-      <p>
-        {year}
-        {brand.name}. Demo brand: a fictional company for a platform demonstration. Nothing on this site is for sale.
-      </p>
+      <p data-footer-legal>{legal}</p>
       <button type="button" data-consent-open class="hover:text-on-inverse text-left underline underline-offset-4">
         Cookie settings
       </button>

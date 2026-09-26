@@ -1,0 +1,25 @@
+Tracking checks on Vercel preview deployments (26 Sep 2026, Playwright, tests/specs/tracking.spec.ts)
+
+What the Google Ads check does: it records every browser request while it opens a page with
+a gclid, accepts consent, opens the form page and submits a test lead. It fails if any request
+matches a Google Ads conversion or remarketing endpoint (pattern ADS_REQUEST in tests/lib/brands.ts).
+
+State of tracking in this demo: no GTM container ID is set on the Vercel projects yet, so
+no Google tag loads at all. The head-order test notes that GTM is not rendered; docs/GTM-SETUP.md
+describes the container, including the exception that keeps the Ads conversion off previews.
+
+== kestrel preview
+  ok 1 [kestrel] › specs/tracking.spec.ts:6:3 › tracking contract › head order: dataLayer init, then consent default, then GTM (when configured) (1.3s)
+  ok 2 [kestrel] › specs/tracking.spec.ts:28:3 › tracking contract › site_env matches the deployment (4.6s)
+  ok 3 [kestrel] › specs/tracking.spec.ts:34:3 › tracking contract › click IDs reach the form without consent but are not stored (1.5s)
+  ok 4 [kestrel] › specs/tracking.spec.ts:47:3 › tracking contract › click IDs persist across pages only after ad_storage is granted (1.8s)
+  ok 5 [kestrel] › specs/tracking.spec.ts:64:3 › tracking contract › no Google Ads requests while browsing and converting (6.6s)
+  5 passed (18.9s)
+
+== paintline preview
+  ok 1 [paintline] › specs/tracking.spec.ts:6:3 › tracking contract › head order: dataLayer init, then consent default, then GTM (when configured) (2.3s)
+  ok 2 [paintline] › specs/tracking.spec.ts:28:3 › tracking contract › site_env matches the deployment (2.4s)
+  ok 3 [paintline] › specs/tracking.spec.ts:34:3 › tracking contract › click IDs reach the form without consent but are not stored (1.6s)
+  ok 4 [paintline] › specs/tracking.spec.ts:47:3 › tracking contract › click IDs persist across pages only after ad_storage is granted (1.3s)
+  ok 5 [paintline] › specs/tracking.spec.ts:64:3 › tracking contract › no Google Ads requests while browsing and converting (6.7s)
+  5 passed (15.2s)

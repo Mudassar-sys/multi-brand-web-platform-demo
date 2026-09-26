@@ -12,6 +12,7 @@ Both brands are fictional and marked "Demo brand" in their footers.
 | Kestrel Machine Co. (live) | https://kestrel-demo-pi.vercel.app |
 | Paintline Murals (live) | https://paintline-demo.vercel.app |
 | Sample landing page PR made by `/new-landing-page` | [PR 5](../../pull/5) (live page: https://kestrel-demo-pi.vercel.app/lp/open-house-demo-day) |
+| Tracking proof (previews) | [proof/14-preview-tracking-checks.txt](./proof/14-preview-tracking-checks.txt) |
 | Proof screenshots | [proof/](./proof) |
 | Owner guide | [docs/OWNER-RUNBOOK.md](./docs/OWNER-RUNBOOK.md) |
 
@@ -23,7 +24,8 @@ Both brands are fictional and marked "Demo brand" in their footers.
    sections ([apps/kestrel/SECTIONS.md](./apps/kestrel/SECTIONS.md)). Invalid data fails the build.
 3. **Pull request.** The assistant runs `pnpm verify kestrel`, pushes a branch and opens a PR.
 4. **Preview.** Vercel posts a preview link on the PR. Forms there go to the TEST list and
-   show a demo receipt; Google Ads conversions cannot fire.
+   show a demo receipt. Every preview check asserts that no Google Ads conversion request is
+   sent ([proof](./proof/14-preview-tracking-checks.txt)).
 5. **Checks.** `ci` (build, page rules, unit tests, link check) and `preview-checks/<brand>`
    (Playwright on the real preview) must pass. A brand the PR does not touch is reported
    "not affected" automatically.
@@ -46,6 +48,10 @@ packages/config                      redirects converter (Webflow CSV to 301s), 
 tests/                               Playwright: tracking, forms, uploads, redirects, SEO
 .github/workflows                    ci, preview-checks, production-checks
 ```
+
+GA4 and Google Ads tags load through a GTM container once its ID is set on each Vercel project
+([docs/GTM-SETUP.md](./docs/GTM-SETUP.md)). No container is connected in this demo yet, so the
+sites currently send no Google tag requests at all.
 
 Details: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md). Tag setup for a real container:
 [docs/GTM-SETUP.md](./docs/GTM-SETUP.md). Every technical claim and its official source:

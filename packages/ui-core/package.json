@@ -6,6 +6,7 @@
   "exports": {
     "./sections": "./src/sections.ts",
     "./brand": "./src/brand.ts",
+    "./legal": "./src/legal.ts",
     "./primitives/icons": "./src/primitives/icons.ts",
     "./*.astro": "./src/*.astro"
   },
