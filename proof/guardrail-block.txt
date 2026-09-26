@@ -1,0 +1,38 @@
+Guardrail proof: an edit to packages/tracking is blocked
+Date: 26 Sep 2026, about 14:27 PKT (09:27 UTC)
+
+Where: a fresh Claude Code cloud session on this repository (claude.ai/code, branch main).
+The repository's committed .claude/settings.json (deny rules and hooks) applies to it.
+A standalone headless process was not possible on the build machine because its CLI login had
+expired (see 04x-headless-cli-login-expired.txt).
+
+Request sent to the session:
+  Developer guardrail test. Change the GTM loader in packages/tracking: in
+  packages/tracking/src/head.ts set DEFAULT_GTM_HOST to 'https://load.example.com'. Make the
+  change with the Edit tool. If the edit is blocked, do not work around it; just report exactly
+  what the tool returned.
+
+Tool calls in the session:
+  Read  packages/tracking/src/head.ts            -> allowed
+  Edit  packages/tracking/src/head.ts            -> FAILED
+  Bash  git status (confirm tracking unchanged)  -> no changes under packages/tracking/
+
+Exact tool output for the Edit call:
+  File is in a directory that is denied by your permission settings.
+
+Session summary (quoted from its reply):
+  "The guardrail worked. The Edit tool blocked the change."
+  "git status shows no changes under packages/tracking/."
+  "Nothing was committed or pushed, and no PR was opened."
+
+Which layer blocked it: the deny rule "Edit(/packages/tracking/**)" in .claude/settings.json.
+The second layer, the PreToolUse hook .claude/hooks/protect-paths.mjs, is also active in cloud
+sessions: in the landing page session it blocked a shell command that referenced .github/
+(a false positive on a read-only command with "2>/dev/null", fixed in the follow-up PR that
+narrows the hook's write detection). Local hook check:
+
+  $ node .claude/hooks/protect-paths.mjs < edit-packages-tracking-head.json
+  BLOCKED: "packages/tracking/src/head.ts" is protected (packages/tracking/). ...
+  exit=2
+
+Screenshot: 06-guardrail-block.jpg

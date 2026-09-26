@@ -73,8 +73,11 @@ If the live site looks wrong after a merge:
 Important: after a rollback, **new merges do not go live on their own**. The site stays on
 the rolled-back version until you undo it. When the fix is merged:
 
-4. Go to the project's Deployments page and click **Undo Rollback** (or open the newest
-   production deployment and choose **Promote**). Automatic go-live is back on.
+4. Undo the rollback. On the project's Overview page a yellow bar says "To undo the
+   rollback". Click **Manage** on that bar. In **Manage Rollback**, keep the deployment
+   marked **Rolled Back** selected (or pick your newer fix), then click **Confirm**. That
+   deployment is promoted, the live site switches to it within seconds, and automatic
+   go-live is back on.
 
 A rolled-back version also uses the settings it was built with (for example the form list
 IDs), so it behaves exactly like it did before.

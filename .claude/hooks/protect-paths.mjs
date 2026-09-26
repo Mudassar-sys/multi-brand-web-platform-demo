@@ -55,7 +55,12 @@ if (['Edit', 'Write', 'MultiEdit', 'NotebookEdit'].includes(tool)) {
 
 if (tool === 'Bash') {
   const command = String(params.command ?? '');
-  const normalized = command.replace(/\\/g, '/');
+  // Redirections that only discard output or merge streams are not writes
+  // (for example `cat .github/pull_request_template.md 2>/dev/null`).
+  const normalized = command
+    .replace(/\\/g, '/')
+    .replace(/&?\d?>>?\s*\/dev\/null/g, ' ')
+    .replace(/\d?>&\d/g, ' ');
   const entry = PROTECTED.find((p) => normalized.includes(p.replace(/\/$/, '')));
   const writes =
     /(^|[^<])>|\btee\b|\bsed\b[^|;&]*\s-i|\bperl\b[^|;&]*\s-i|\b(mv|cp|rm|truncate|touch|install|patch)\b|\bgit\s+(checkout|restore|apply|rm|mv|stash)\b|\b(node|python3?|deno|bun)\s+-(e|c)\b/.test(
