@@ -130,7 +130,8 @@ for every `site_env` other than `production`.
 - `ci` (pull_request): works out affected brands with the same rule Vercel uses (a file in a
   workspace package affects the apps that depend on it; a file outside every package is a
   global change), posts `preview-checks/<brand>` = success "not affected" for the others,
-  checks `SECTIONS.md`, runs `turbo run build check test --affected`, runs lychee on the built
+  checks `SECTIONS.md`, runs `turbo run build check test` for the affected brands and every
+  package they depend on, runs lychee on the built
   HTML, and re-builds with a dummy GTM ID to check the head order.
 - `preview-checks` (deployment_status, success only): derives the brand from the deployment
   environment name, posts a pending status, runs that brand's Playwright project against the

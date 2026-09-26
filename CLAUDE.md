@@ -50,7 +50,8 @@ Vercel dashboard > the brand's project > Deployments > the previous production d
 menu > **Instant Rollback**. The old version is live within seconds.
 
 After a rollback, new merges to `main` do **not** go live automatically. Fix the problem with a
-normal PR, merge it, then click **Undo Rollback** (or promote the new deployment). Until then the
+normal PR, merge it, then undo the rollback: Overview > yellow "To undo the rollback" bar >
+**Manage** > select the deployment to promote > **Confirm** (or promote the new deployment). Until then the
 rolled-back version stays live. See `docs/OWNER-RUNBOOK.md`.
 
 ## Commands
