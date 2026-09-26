@@ -13,6 +13,7 @@ Both brands are fictional and marked "Demo brand" in their footers.
 | Paintline Murals (live) | https://paintline-demo.vercel.app |
 | Sample landing page PR made by `/new-landing-page` | [PR 5](../../pull/5) (live page: https://kestrel-demo-pi.vercel.app/lp/open-house-demo-day) |
 | Tracking proof (previews) | [proof/14-preview-tracking-checks.txt](./proof/14-preview-tracking-checks.txt) |
+| Strict GTM and GA4 check | [proof/15-strict-tracking-check.txt](./proof/15-strict-tracking-check.txt) |
 | Proof screenshots | [proof/](./proof) |
 | Owner guide | [docs/OWNER-RUNBOOK.md](./docs/OWNER-RUNBOOK.md) |
 

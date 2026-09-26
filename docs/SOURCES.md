@@ -34,6 +34,31 @@ measurements with their evidence, not documentation claims.
 | toHaveText and toContainText accept a string or a RegExp as the expected value | https://playwright.dev/docs/api/class-locatorassertions | 2026-09-26 |
 | expect(locator).not makes an assertion check for the opposite condition | https://playwright.dev/docs/api/class-locatorassertions | 2026-09-26 |
 | Rebase and merge adds each commit of the head branch onto the base branch individually, without a merge commit | https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github | 2026-09-26 |
+| test.skip(condition, description) marks the test skipped when the condition is true; Playwright aborts it at that call, and the docs recommend passing a description | https://playwright.dev/docs/api/class-test | 2026-09-26 |
+| page.waitForRequest and page.waitForResponse take a URL, RegExp or predicate, and wait 30 seconds by default | https://playwright.dev/docs/api/class-page | 2026-09-26 |
+| request.response() resolves to null when no response was received due to an error; request.failure() is null unless the request failed (the requestfailed event) | https://playwright.dev/docs/api/class-request | 2026-09-26 |
+| HTTP error responses such as 404 still complete with requestfinished; only network-level failures emit requestfailed | https://playwright.dev/docs/api/class-request | 2026-09-26 |
+| response.status() returns the HTTP status code of the response, and response.url() its URL | https://playwright.dev/docs/api/class-response | 2026-09-26 |
+| expect.poll turns a synchronous expect into a polling one, with an optional message and a timeout that defaults to 5 seconds | https://playwright.dev/docs/test-assertions | 2026-09-26 |
+
+## Google endpoints matched by the tracking tests
+
+Every URL pattern in `tests/lib/google-tags.ts` and `ADS_REQUEST` in `tests/lib/brands.ts`.
+`www.google.com` is deliberately not matched: Google's CSP guide lists it for Tag Manager and
+for Google Ads alike, so it cannot tell an Ads hit from GTM traffic.
+
+| Endpoint the test matches | Where | Source | Checked |
+| --- | --- | --- | --- |
+| `<GTM host>/gtm.js?id=<container ID>`, default host `https://www.googletagmanager.com` | Strict GTM check: waits for this response and requires status 200 | https://support.google.com/tagmanager/answer/14847097 (install snippet) | 2026-09-26 |
+| Any `https://*.google-analytics.com/` URL (`GA4_HIT`) | Strict GA4 check: at least one request after Accept all | https://developers.google.com/tag-platform/security/guides/csp (Google Analytics section: img-src and connect-src must allow `https://*.google-analytics.com`) | 2026-09-26 |
+| `https://www.googletagmanager.com/gtag/js?id=<tag ID>` (part of `GOOGLE_TAG_REQUEST`) | Strict GA4 check: one of the URLs searched for the Measurement ID | https://developers.google.com/tag-platform/gtagjs/install (install snippet loads `gtag/js?id=TAG_ID`) | 2026-09-26 |
+| `googleadservices.com` | Preview check: no Google Ads requests | https://developers.google.com/tag-platform/security/guides/csp (Google Ads section lists `https://www.googleadservices.com`) | 2026-09-26 |
+| `googleads.g.doubleclick.net` | Preview check: no Google Ads requests | https://developers.google.com/tag-platform/security/guides/csp (Google Ads section lists `https://googleads.g.doubleclick.net`) | 2026-09-26 |
+| `/pagead/conversion` and `/pagead/viewthroughconversion` paths | Preview check: no Google Ads requests | **Not in official docs.** Live observation: none yet, because no container is connected and these deployments send no Google requests. Kept because an extra match can only make this check stricter. | 2026-09-26 |
+| `google.com/ads/ga-audiences` | Preview check: no Google Ads requests | **Not in official docs.** Live observation: none yet, for the same reason. Kept for the same reason. | 2026-09-26 |
+| The GA4 Measurement ID inside a GA4 hit URL, or inside a gtag.js URL that GTM loads | Strict GA4 check: some matched request must contain the ID | **Not in official docs** for a GTM setup (the gtag.js page documents the `id` parameter only for a direct install). Live observation: none yet. The first run with the real IDs confirms it; if Google uses another URL the check fails, it does not pass silently. | 2026-09-26 |
+| `gtm.js` returns 404 for a container ID that does not exist | Why a status 200 check proves the container is real | **Not in official docs.** Live observation: `GTM-ZZZZZZZ` returned 404, and the strict check failed on it ([proof/15-strict-tracking-check.txt](../proof/15-strict-tracking-check.txt)) | 2026-09-26 |
+| In Chromium that 404 script response is blocked as `net::ERR_BLOCKED_BY_ORB`, so the page gets no response event, only requestfailed | Why the strict check waits for the gtm.js request and reads `request.response()` and `request.failure()` | **Not in official docs.** Live observation: Playwright Chromium against a local build with `PUBLIC_GTM_ID=GTM-ZZZZZZZ` ([proof/15-strict-tracking-check.txt](../proof/15-strict-tracking-check.txt)) | 2026-09-26 |
 
 ## Observed on the live deployments (evidence, not documentation)
 

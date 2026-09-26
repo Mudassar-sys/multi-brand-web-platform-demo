@@ -89,8 +89,18 @@ For each brand's Vercel project: Settings > Environment Variables > add `PUBLIC_
 `GTM-...` for **Production** and **Preview**, then redeploy (Deployments > latest > Redeploy).
 Previews then load GTM too, which is how step 5 works; the exception keeps Ads silent there.
 
-## 7. Re-run the live tracking test
+## 7. Record the IDs for the tests, then re-run them
 
-Open any PR (or re-run `preview-checks` on an existing one). The tracking contract test then
-also checks that the GTM snippet comes after the consent default, and the Ads check confirms
-zero Google Ads requests on the preview.
+In `tests/tracking-expectations.json`, fill in the brand's `gtmId` (`GTM-...`) and
+`ga4MeasurementId` (`G-...`) in a PR. From then on the tracking test for that brand is strict
+([proof](../proof/15-strict-tracking-check.txt)):
+
+- the GTM snippet must be on the page with that container ID;
+- `gtm.js` for that ID must return status 200;
+- after **Accept all**, a GA4 request must reach `*.google-analytics.com` and a Google tag
+  request must carry the Measurement ID.
+
+Any missing piece fails the preview check. The test is also strict whenever a page renders a
+GTM snippet, so setting `PUBLIC_GTM_ID` without recording the GA4 ID fails too. With neither,
+the test is skipped with a reason. The same PR re-runs the checks, including the Ads check that
+confirms zero Google Ads requests on the preview.

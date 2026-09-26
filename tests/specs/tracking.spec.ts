@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { ADS_REQUEST, brandOf, brands, expectedSiteEnv } from '../lib/brands';
 import { dismissConsent, fillRequired, HUMAN_DELAY_MS } from '../lib/forms';
+import { expectedTags, GA4_HIT, GOOGLE_TAG_REQUEST, renderedGtm } from '../lib/google-tags';
 
 test.describe('tracking contract', () => {
   test('head order: dataLayer init, then consent default, then GTM (when configured)', async ({ request }) => {
@@ -59,6 +60,47 @@ test.describe('tracking contract', () => {
     await page.locator('[data-consent-open]').first().click();
     await dismissConsent(page, 'denied');
     expect(await page.evaluate(() => localStorage.getItem('platform_attribution'))).toBeNull();
+  });
+
+  test('GTM and GA4 load once a container is set or expected', async ({ page, request }, testInfo) => {
+    const brand = brands[brandOf(testInfo)];
+    const expected = expectedTags(brandOf(testInfo));
+    const gtm = renderedGtm(await (await request.get('/')).text());
+    test.skip(!gtm && !expected.gtmId, 'No GTM snippet on this deployment and no container expected in tests/tracking-expectations.json');
+
+    // Strict from here: every missing piece fails the check.
+    expect(gtm, 'GTM snippet rendered in <head>').not.toBeNull();
+    expect(gtm!.id, 'container ID in the GTM snippet').toMatch(/^GTM-[A-Z0-9]+$/);
+    if (expected.gtmId) expect(gtm!.id, 'container ID matches the expected one').toBe(expected.gtmId);
+
+    const requests: string[] = [];
+    page.on('request', (req) => {
+      if (GOOGLE_TAG_REQUEST.test(req.url())) requests.push(req.url());
+    });
+    // Wait for the request, not the response: Chromium can block a failed script response
+    // (net::ERR_BLOCKED_BY_ORB for a 404), and then no response event ever fires.
+    const gtmRequest = page.waitForRequest((req) => req.url().startsWith(gtm!.scriptUrl));
+    await page.goto('/');
+    const gtmScript = await gtmRequest;
+    const gtmResponse = await gtmScript.response();
+    expect(
+      gtmResponse?.status(),
+      `${gtm!.scriptUrl} status (request failure: ${gtmScript.failure()?.errorText ?? 'none'})`,
+    ).toBe(200);
+
+    expect(expected.ga4MeasurementId, 'GA4 Measurement ID set in tests/tracking-expectations.json').toMatch(/^G-[A-Z0-9]+$/);
+    await dismissConsent(page, 'granted');
+    await page.goto(brand.formPath);
+    await expect
+      .poll(() => requests.filter((url) => GA4_HIT.test(url)).length, {
+        message: 'GA4 request to *.google-analytics.com after Accept all',
+        timeout: 15_000,
+      })
+      .toBeGreaterThan(0);
+    expect(
+      requests.some((url) => url.includes(expected.ga4MeasurementId)),
+      'a Google tag request carries the expected GA4 Measurement ID',
+    ).toBe(true);
   });
 
   test('no Google Ads requests while browsing and converting', async ({ page }, testInfo) => {

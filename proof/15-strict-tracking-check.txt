@@ -1,0 +1,55 @@
+Strict tracking check: a missing GTM or GA4 load fails
+Date: 26 Sep 2026, about 15:55 PKT (10:55 UTC)
+Test: tests/specs/tracking.spec.ts, "GTM and GA4 load once a container is set or expected"
+
+When the check is strict
+  The page renders a GTM snippet (PUBLIC_GTM_ID is set on the Vercel project), or
+  tests/tracking-expectations.json (or EXPECTED_GTM_ID) names a container for the brand.
+  Otherwise the test is skipped with a reason; it never passes without checking anything.
+
+What it requires once strict, in order
+  1. The GTM snippet is in <head> and carries a valid container ID (the expected one, if set).
+  2. The gtm.js request for that ID gets status 200.
+  3. A GA4 Measurement ID is recorded for the brand.
+  4. After Accept all and one navigation, at least one request goes to *.google-analytics.com.
+  5. Some Google tag request URL contains the expected Measurement ID.
+
+Run A: local build with a container that does not exist (PUBLIC_GTM_ID=GTM-ZZZZZZZ)
+  $ BASE_URL=http://127.0.0.1:4411 EXPECTED_SITE_ENV=development \
+      playwright test specs/tracking.spec.ts --project=kestrel --grep "GTM and GA4"
+  x  [kestrel] tracking contract > GTM and GA4 load once a container is set or expected (1.2s)
+     Error: https://www.googletagmanager.com/gtm.js?id=GTM-ZZZZZZZ status
+            (request failure: net::ERR_BLOCKED_BY_ORB)
+     Expected: 200
+     Received: undefined
+  1 failed, exit=1
+  Same URL with curl: 404 text/html; charset=UTF-8
+
+  First version of this test waited for the gtm.js response and failed only by timeout
+  (60 s), because Chromium blocked the 404 script response and no response event fired.
+  It now waits for the request and reads request.response() and request.failure().
+
+Run B: container expected, deployment without a snippet (production today)
+  $ EXPECTED_GTM_ID=GTM-ZZZZZZZ BASE_URL=https://kestrel-demo-pi.vercel.app \
+      EXPECTED_SITE_ENV=production playwright test specs/tracking.spec.ts \
+      --project=kestrel --grep "GTM and GA4"
+  x  [kestrel] tracking contract > GTM and GA4 load once a container is set or expected (883ms)
+     Error: GTM snippet rendered in <head>
+     expect(received).not.toBeNull()
+     Received: null
+  1 failed, exit=1
+
+Run C: nothing configured and nothing expected (the state of both brands today)
+  $ BASE_URL=https://kestrel-demo-pi.vercel.app EXPECTED_SITE_ENV=production \
+      playwright test specs/tracking.spec.ts --project=kestrel
+  ok 1 head order: dataLayer init, then consent default, then GTM (when configured)
+  ok 2 site_env matches the deployment
+  ok 3 click IDs reach the form without consent but are not stored
+  ok 4 click IDs persist across pages only after ad_storage is granted
+  -  5 GTM and GA4 load once a container is set or expected   (skipped, reason shown)
+  -  6 no Google Ads requests while browsing and converting   (skipped: previews only)
+  2 skipped, 4 passed, exit=0
+
+Not exercised: steps 3 to 5 with a real container. No GTM container or GA4 property is
+connected yet, so the GA4 part has not run against Google. The first preview run after the
+IDs are added is its first real test.
