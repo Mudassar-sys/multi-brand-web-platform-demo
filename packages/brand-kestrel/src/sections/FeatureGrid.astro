@@ -1,0 +1,47 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Icon from '@platform/ui-core/primitives/Icon.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { featureGrid } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof featureGrid.schema> & { index?: number };
+const { id, eyebrow, heading, intro, columns = 3, features, index = 0 } = Astro.props;
+const headingId = `${id ?? `features-${index}`}-title`;
+const cols = { 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3', 4: 'sm:grid-cols-2 lg:grid-cols-4' };
+---
+
+<Section id={id} labelledBy={headingId}>
+  <Container width="wide">
+    <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} />
+    <ul
+      class:list={[
+        'bg-line border-line mt-12 grid gap-px overflow-hidden border',
+        cols[columns],
+      ]}
+      role="list"
+    >
+      {
+        features.map((feature, i) => (
+          <li class="bg-surface group relative p-6 transition-colors sm:p-8">
+            <div class="flex items-start justify-between">
+              <span class="border-line-strong text-ink inline-flex size-11 items-center justify-center border">
+                <Icon name={feature.icon} class="size-5" />
+              </span>
+              <span class="text-ink-muted font-mono text-[0.7rem] tracking-[0.14em]" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            </div>
+            <h3 class="font-display mt-6 text-lg font-bold tracking-tight">{feature.title}</h3>
+            <p class="text-ink-muted mt-2 text-[0.95rem] leading-relaxed">{feature.body}</p>
+            <span
+              class="bg-accent absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"
+              aria-hidden="true"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </Container>
+</Section>

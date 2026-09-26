@@ -1,0 +1,69 @@
+---
+/**
+ * Minimal demo consent banner (Accept / Reject). Production builds replace
+ * this with a Google-certified CMP loaded on the Consent Initialization
+ * trigger; see docs/GTM-SETUP.md.
+ */
+interface Props {
+  brandName: string;
+}
+const { brandName } = Astro.props;
+---
+
+<section
+  data-consent-banner
+  hidden
+  aria-labelledby="consent-title"
+  class="border-line-strong bg-surface-raised text-ink fixed inset-x-3 bottom-3 z-50 mx-auto max-w-3xl border p-5 shadow-2xl sm:inset-x-6 sm:bottom-6 sm:p-6"
+>
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+    <div>
+      <h2 id="consent-title" class="text-base font-semibold">Cookies on this demo site</h2>
+      <p class="text-ink-muted mt-1.5 text-sm leading-relaxed">
+        {brandName} can use analytics and advertising storage to measure visits and ad clicks. Nothing is stored
+        until you choose. You can change this any time from Cookie settings in the footer.
+      </p>
+    </div>
+    <div class="flex shrink-0 gap-2">
+      <button
+        type="button"
+        data-consent-choice="denied"
+        class="border-line-strong focus-visible:outline-focus min-h-11 border px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        Reject all
+      </button>
+      <button
+        type="button"
+        data-consent-choice="granted"
+        class="bg-action text-on-action hover:bg-action-hover focus-visible:outline-focus min-h-11 px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        Accept all
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { captureAttribution, fillAttributionFields, readConsent, setConsent } from './client';
+
+  const banner = document.querySelector<HTMLElement>('[data-consent-banner]');
+  captureAttribution();
+  fillAttributionFields();
+
+  if (banner && !readConsent()) banner.hidden = false;
+
+  banner?.querySelectorAll<HTMLButtonElement>('[data-consent-choice]').forEach((button) => {
+    button.addEventListener('click', () => {
+      setConsent(button.dataset.consentChoice === 'granted' ? 'granted' : 'denied');
+      banner.hidden = true;
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-consent-open]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      if (!banner) return;
+      banner.hidden = false;
+      banner.querySelector<HTMLButtonElement>('[data-consent-choice="granted"]')?.focus();
+    });
+  });
+</script>

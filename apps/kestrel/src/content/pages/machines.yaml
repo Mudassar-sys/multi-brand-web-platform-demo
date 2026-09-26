@@ -1,0 +1,47 @@
+title: Machines and specifications
+description: Compare the Kestrel KL-160 and KL-250 compact CNC lathes side by side, with a practical guide to choosing your first CNC lathe for a small shop.
+sections:
+  - type: pageHeader
+    eyebrow: Machines
+    heading: Two lathes, one goal - the first good part on day one
+    intro: The KL-160 suits bar work and small precision parts. The KL-250 adds swing, power and a larger bore for general job-shop turning.
+
+  - type: specTable
+    id: specs
+    eyebrow: Specifications
+    heading: KL-160 and KL-250 side by side
+    intro: Figures describe the fictional demo machines and are for illustration only.
+    models: [KL-160, KL-250]
+    rows:
+      - { label: Swing over bed, values: [160 mm, 250 mm] }
+      - { label: Distance between centres, values: [300 mm, 400 mm] }
+      - { label: Spindle nose, values: [A2-3, A2-4] }
+      - { label: Spindle bore, values: [26 mm, 38 mm] }
+      - { label: Spindle speed, values: ['4,500 rpm', '4,000 rpm'] }
+      - { label: Spindle motor, values: [2.2 kW, 5.5 kW] }
+      - { label: Control, values: [Conversational + G-code, Conversational + G-code] }
+      - { label: Power supply, values: [230 V single-phase, 230 V or 400 V] }
+      - { label: Footprint, values: [1.7 x 1.0 m, 2.1 x 1.2 m] }
+      - { label: Weight, values: [680 kg, '1,150 kg'] }
+    footnote: Demo brand. Specifications are illustrative and do not describe a real product.
+
+  - type: richText
+    eyebrow: Buying guide
+    heading: Choosing your first CNC lathe
+    paragraphs:
+      - Start with the largest part you turn today and add about **20 percent** headroom on diameter and length. Most small shops outgrow bore size before they outgrow swing, so check bar capacity first.
+      - Power is the next filter. If your building only has single-phase supply, the KL-160 or the single-phase KL-250 avoids the cost of a phase converter.
+      - Finally, count the changeovers you do in a week. If you run many short jobs, quick-change tooling and conversational programming save more time than a faster spindle.
+      - Not sure yet? [Book a showroom demo](/contact) and bring a drawing. We will cut it on both machines.
+    aside:
+      title: Bring to your demo
+      items:
+        - A drawing of a typical part
+        - A sample of the material
+        - Photos of your power panel
+        - Your floor dimensions
+
+  - type: ctaBand
+    heading: Ready to compare both machines on your part?
+    primaryCta: { label: Book a demo, href: /contact }
+    tone: inverse

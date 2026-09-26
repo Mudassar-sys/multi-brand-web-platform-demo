@@ -1,0 +1,64 @@
+title: How direct-to-wall printing works
+description: How Paintline prints murals straight onto your wall, what it costs, and how to prepare. Mockups, print day and care, explained step by step.
+sections:
+  - type: pageHeader
+    eyebrow: How it works
+    heading: A mural without the months of scaffolding
+    intro: A vertical printer moves across the wall and lays down ink in fine passes. The result looks painted, lasts for years and takes a day, not weeks.
+    art: wave
+
+  - type: processSteps
+    heading: Four steps, one short visit
+    steps:
+      - title: Quote from a photo
+        body: Send a photo and rough size. We reply with a price range and any surface questions.
+      - title: Mockup and proof
+        body: We place the artwork on your wall photo and adjust scale and colour until it is right.
+      - title: Print day
+        body: The printer is set up on a track, calibrated to your wall and runs in fine passes.
+      - title: Care and handover
+        body: A clear coat is optional. We leave care notes and a touch-up plan.
+
+  - type: richText
+    eyebrow: The technology
+    heading: Why print straight onto the wall?
+    paragraphs:
+      - Vinyl wallcoverings arrive in panels, so they have seams and can lift at the edges. Printing directly onto the wall avoids both, and the texture of brick or concrete shows through the image.
+      - Compared with a hand-painted mural, printing is **faster and more predictable**. You approve an exact proof, and the wall matches it.
+      - Hand painting still has its place for very large exteriors or loose brushwork styles. If that suits your project better, [tell us about it](/contact) and we will say so.
+    pullQuote: The wall should look like it was always meant to be that way.
+
+  - type: packages
+    id: pricing
+    eyebrow: Pricing
+    heading: Starting prices
+    intro: Every wall is quoted from a photo, but these ranges help you plan.
+    tiers:
+      - name: Feature wall
+        price: From $900
+        summary: One interior wall up to 10 square metres, from your artwork or one of our styles.
+        includes: [Design mockup, One print day, Care notes]
+      - name: Room refresh
+        price: From $2,400
+        summary: Up to three walls in one space, designed to work together.
+        includes: [Design mockup, Up to two print days, Colour matching to your brand, Care notes]
+        highlighted: true
+        cta: { label: Get a quote, href: /contact }
+      - name: Large space
+        price: Custom
+        summary: Stairwells, lobbies and multi-room projects.
+        includes: [Site visit, Phased printing plan, Clear protective coat]
+    footnote: Demo brand. Prices are illustrative and not an offer.
+
+  - type: faq
+    heading: Preparing for print day
+    items:
+      - question: Do I need to empty the room?
+        answer: We need about 1.5 metres of clear floor in front of the wall. Furniture elsewhere can stay.
+      - question: Does the wall need to be painted first?
+        answer: Painted drywall is ideal. Bare or textured surfaces may need a primer coat, which we can apply.
+
+  - type: ctaBand
+    heading: Send a photo, get a price range
+    primaryCta: { label: Get a quote, href: /contact }
+    art: botanical

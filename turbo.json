@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "globalEnv": ["VERCEL_ENV", "VERCEL_PROJECT_PRODUCTION_URL"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": ["PUBLIC_VERCEL_ENV", "PUBLIC_GTM_ID", "PUBLIC_UPLOADS_ENABLED"],
+      "passThroughEnv": [
+        "FORMS_MODE",
+        "AC_API_URL",
+        "AC_API_TOKEN",
+        "MAILERLITE_API_TOKEN",
+        "BLOB_READ_WRITE_TOKEN"
+      ],
+      "outputs": [".vercel/output/**", "dist/**"]
+    },
+    "check": {
+      "dependsOn": ["^build"],
+      "env": ["PUBLIC_VERCEL_ENV", "PUBLIC_GTM_ID", "PUBLIC_UPLOADS_ENABLED"]
+    },
+    "test": {
+      "outputs": []
+    }
+  }
+}

@@ -1,0 +1,36 @@
+---
+import type { z } from 'astro/zod';
+import Button from '@platform/ui-core/primitives/Button.astro';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Heading from '@platform/ui-core/primitives/Heading.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { ctaBand } from '../schemas';
+import ChuckDrawing from '../art/ChuckDrawing.astro';
+
+type Props = z.infer<typeof ctaBand.schema> & { index?: number };
+const { id, heading, body, primaryCta, secondaryCta, tone = 'inverse', index = 0 } = Astro.props;
+const headingId = `${id ?? `cta-${index}`}-title`;
+---
+
+<Section id={id} labelledBy={headingId} tone={tone} spacing="md" class="overflow-hidden">
+  <ChuckDrawing
+    class="pointer-events-none absolute top-1/2 -right-24 -z-10 hidden w-[28rem] -translate-y-1/2 opacity-25 md:block"
+    label=""
+  />
+  <Container width="wide" class="flex flex-col items-start gap-8 md:flex-row md:items-end md:justify-between">
+    <div class="max-w-2xl">
+      <Heading level={2} size="xl" id={headingId}>{heading}</Heading>
+      {body && <p class="text-ink-muted mt-4 text-lg text-pretty">{body}</p>}
+    </div>
+    <div class="flex shrink-0 flex-wrap gap-3">
+      <Button href={primaryCta.href} size="lg" icon="arrow-right">{primaryCta.label}</Button>
+      {
+        secondaryCta && (
+          <Button href={secondaryCta.href} size="lg" variant="secondary">
+            {secondaryCta.label}
+          </Button>
+        )
+      }
+    </div>
+  </Container>
+</Section>

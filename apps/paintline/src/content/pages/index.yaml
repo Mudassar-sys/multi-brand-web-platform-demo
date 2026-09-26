@@ -1,0 +1,82 @@
+title: Direct-to-wall mural printing
+description: Paintline Murals prints artwork straight onto brick, drywall and concrete, on site and usually in a day. A fictional demo brand for a platform demo.
+sections:
+  - type: hero
+    eyebrow: Direct-to-wall mural printing
+    heading: Big, bright walls, printed in a day
+    subheading: We print your artwork straight onto the wall with a vertical printer. No vinyl, no seams, no peeling edges, and far less disruption than a hand-painted mural.
+    primaryCta: { label: Get a quote, href: /contact }
+    secondaryCta: { label: See how it works, href: /how-it-works }
+    badges: [Printed on site, No vinyl or seams, Low-odour inks]
+    art: sunrise
+
+  - type: serviceCards
+    eyebrow: Where we print
+    heading: Walls that change how a room feels
+    intro: From a single feature wall to a full stairwell, we print on the surfaces you already have.
+    cards:
+      - icon: coffee
+        title: Cafes and restaurants
+        body: A signature wall that customers photograph and share, finished between two service days.
+        link: { label: See cafe ideas, href: '/#gallery' }
+      - icon: building
+        title: Offices and studios
+        body: Brand walls, meeting-room art and wayfinding that feel painted, not stuck on.
+      - icon: graduation-cap
+        title: Schools and clinics
+        body: Calm, cheerful walls in low-odour, water-based inks that suit busy shared spaces.
+
+  - type: gallery
+    id: gallery
+    eyebrow: Style ideas
+    heading: Start from a style, make it yours
+    intro: Every wall is designed for its room. These concepts show the range of looks a single print day can deliver.
+    items:
+      - { art: botanical, title: Greenhouse, caption: Oversized leaves that bring a plant-filled feel to a narrow cafe., space: Cafe }
+      - { art: geo, title: Blocks, caption: Bold geometric shapes in brand colours for a studio lobby., space: Office }
+      - { art: wave, title: Tide, caption: Slow horizontal waves for a calm treatment room., space: Clinic }
+      - { art: city, title: Night shift, caption: A dusk skyline for a late-night ramen counter., space: Restaurant }
+      - { art: abstract, title: Loose shapes, caption: Overlapping organic forms for a creative agency stairwell., space: Stairwell }
+      - { art: sunrise, title: First light, caption: A warm sunrise for a school entrance hall., space: School }
+
+  - type: processSteps
+    eyebrow: How it works
+    heading: From photo to finished wall
+    steps:
+      - title: Send a photo
+        body: A phone photo of the wall and a rough size is enough for a first price range.
+      - title: Approve the mockup
+        body: We place your artwork on a photo of your wall so you can see scale and colour.
+      - title: Print day
+        body: Our crew sets up the printer and prints the wall, usually in a single day.
+      - title: Reveal
+        body: We clean up, check every edge with you and hand over care notes.
+
+  - type: surfaceGuide
+    eyebrow: Surfaces
+    heading: Will it work on my wall?
+    intro: Most interior walls print beautifully. Send a photo if your surface is not listed.
+    surfaces:
+      - { name: Painted drywall, rating: great, note: Our most common surface. Smooth paint gives the sharpest detail. }
+      - { name: Brick, rating: good, note: "Texture shows through the print, which many people love." }
+      - { name: Concrete, rating: good, note: Sealed concrete prints well after a quick primer coat. }
+      - { name: Wood panelling, rating: good, note: Works on sanded and primed panels. }
+      - { name: Glass, rating: ask, note: Possible with a special primer. Ask us first. }
+
+  - type: faq
+    heading: Questions we hear a lot
+    items:
+      - question: How long does printing take?
+        answer: Most feature walls are printed in a single day on site. Larger walls may take two.
+      - question: Is the ink safe for indoor spaces?
+        answer: We use water-based inks with low odour, so rooms can usually reopen the same day.
+      - question: Can you print my own artwork?
+        answer: Yes. Send a high-resolution file, or we can adapt one of our styles to your brand.
+      - question: Is this a real company?
+        answer: No. Paintline Murals is a fictional demo brand used to show a multi-brand website platform.
+
+  - type: ctaBand
+    heading: Ready for a wall people talk about?
+    body: Send a photo of your wall and we will reply with a price range within one business day.
+    primaryCta: { label: Get a quote, href: /contact }
+    art: abstract

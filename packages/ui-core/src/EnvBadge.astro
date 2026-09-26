@@ -1,0 +1,20 @@
+---
+/**
+ * Visible on previews and local builds only, so an owner can tell at a
+ * glance that they are not looking at the live site.
+ */
+interface Props {
+  siteEnv: 'preview' | 'development' | 'production';
+}
+const { siteEnv } = Astro.props;
+const label = siteEnv === 'preview' ? 'Preview build' : 'Local build';
+---
+
+<div
+  data-env-badge={siteEnv}
+  class="bg-inverse text-on-inverse fixed bottom-4 left-4 z-40 max-w-[calc(100vw-2rem)] rounded-full px-4 py-2 text-xs shadow-lg"
+>
+  <span class="bg-accent mr-2 inline-block size-2 rounded-full align-middle" aria-hidden="true"></span>
+  <strong class="font-semibold">{label}</strong>
+  <span class="opacity-80">: forms go to test lists, Ads conversions are blocked.</span>
+</div>

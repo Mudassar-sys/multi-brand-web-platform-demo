@@ -1,0 +1,29 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Heading from '@platform/ui-core/primitives/Heading.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import MuralArt from '../art/MuralArt.astro';
+import type { pageHeader } from '../schemas';
+
+type Props = z.infer<typeof pageHeader.schema> & { index?: number };
+const { id, eyebrow, heading, intro, art } = Astro.props;
+const headingId = `${id ?? 'page'}-title`;
+---
+
+<Section id={id} labelledBy={headingId} spacing="sm">
+  <Container width="wide" class="flex flex-col gap-10 pt-4 sm:pt-8 md:flex-row md:items-end md:justify-between">
+    <div class="max-w-3xl">
+      {eyebrow && <p class="font-eyebrow text-eyebrow text-accent-ink mb-4 uppercase">{eyebrow}</p>}
+      <Heading level={1} size="xl" id={headingId}>{heading}</Heading>
+      {intro && <p class="text-lead text-ink-muted mt-5 max-w-2xl text-pretty">{intro}</p>}
+    </div>
+    {
+      art && (
+        <div class="aspect-square w-40 shrink-0 overflow-hidden rounded-full sm:w-52" aria-hidden="true">
+          <MuralArt variant={art} label="" />
+        </div>
+      )
+    }
+  </Container>
+</Section>

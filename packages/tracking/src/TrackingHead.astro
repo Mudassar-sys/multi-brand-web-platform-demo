@@ -1,0 +1,21 @@
+---
+/**
+ * Render as the first child of <head>, right after charset and viewport.
+ * Order is part of the tracking contract and is covered by tests.
+ */
+import type { TrackingConfig } from './config';
+import { getGtmId, type SiteEnv } from './env';
+import { buildGtmSnippet, buildHeadScript } from './head';
+
+interface Props {
+  brand: string;
+  siteEnv: SiteEnv;
+  config: TrackingConfig;
+}
+const { brand, siteEnv, config } = Astro.props;
+const gtmId = getGtmId();
+const headScript = buildHeadScript({ brand, siteEnv, config });
+---
+
+<script is:inline data-tracking="consent-default" set:html={headScript} />
+{gtmId && <script is:inline data-tracking="gtm" set:html={buildGtmSnippet(gtmId, config.gtmHost)} />}

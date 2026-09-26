@@ -1,0 +1,34 @@
+---
+/**
+ * Every section starts here. Tones map to brand tokens, so the same
+ * markup looks right in each brand's theme.
+ */
+interface Props {
+  id?: string;
+  tone?: 'base' | 'muted' | 'inverse' | 'accent';
+  spacing?: 'sm' | 'md' | 'lg';
+  labelledBy?: string;
+  class?: string;
+}
+const { id, tone = 'base', spacing = 'md', labelledBy, class: className } = Astro.props;
+const tones = {
+  base: 'bg-surface text-ink',
+  muted: 'bg-surface-muted text-ink',
+  inverse: 'bg-inverse text-on-inverse',
+  accent: 'bg-accent text-on-accent',
+};
+const spacings = {
+  sm: 'py-12 sm:py-16',
+  md: 'py-16 sm:py-24',
+  lg: 'py-20 sm:py-32',
+};
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledBy}
+  data-tone={tone}
+  class:list={['relative isolate', tones[tone], spacings[spacing], className]}
+>
+  <slot />
+</section>

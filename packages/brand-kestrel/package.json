@@ -1,0 +1,29 @@
+{
+  "name": "@platform/brand-kestrel",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./schemas": "./src/schemas.ts",
+    "./registry": "./src/registry.ts",
+    "./Layout.astro": "./src/Layout.astro",
+    "./theme.css": "./theme.css"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fontsource-variable/archivo": "5.3.0",
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@platform/forms": "workspace:*",
+    "@platform/ui-core": "workspace:*"
+  },
+  "devDependencies": {
+    "astro": "7.3.5",
+    "vitest": "5.0.2",
+    "yaml": "2.9.1"
+  },
+  "peerDependencies": {
+    "astro": "^7"
+  }
+}

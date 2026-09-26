@@ -1,0 +1,24 @@
+title: Get a mural quote
+description: Request a Paintline mural quote. Send a photo of your wall and rough measurements and we reply with a price range within one business day.
+sections:
+  - type: pageHeader
+    eyebrow: Get a quote
+    heading: Tell us about your wall
+    intro: A phone photo and a rough size are enough. We reply with a price range within one business day.
+    art: geo
+
+  - type: quoteForm
+    id: quote
+    heading: Request a quote
+    intro: Attach a photo of the wall or your artwork (PDF, PNG or JPEG, up to 10 MB).
+    formId: quote-main
+    fields: [lastName, phone, city, wallSize, surface, message, attachment]
+    surfaceOptions: [Painted drywall, Brick, Concrete, Wood panelling, Glass, Not sure]
+    submitLabel: Request a quote
+    successMessage: Thanks. We will reply with a price range within one business day.
+    aside:
+      title: What happens next
+      points:
+        - We review your photo and measurements
+        - You get a price range and any surface questions
+        - If it looks right, we send a mockup on your own wall

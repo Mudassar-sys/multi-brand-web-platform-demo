@@ -1,0 +1,129 @@
+---
+/**
+ * Wraps a brand's form fields with everything the forms contract needs:
+ * hidden click-ID and UTM fields, the honeypot, the form-start timestamp,
+ * a live status region, the success message and the demo receipt panel.
+ * Brands style their own fields and submit button inside the slot.
+ */
+import { CLICK_ID_KEYS } from './schema';
+
+interface Props {
+  formId: string;
+  successMessage: string;
+  endpoint?: string;
+  uploadEndpoint?: string;
+  class?: string;
+}
+const { formId, successMessage, endpoint = '/api/lead', uploadEndpoint = '/api/upload', class: className } = Astro.props;
+---
+
+<div data-lead-form-shell class="lead-form-shell">
+  <form
+    data-lead-form
+    data-form-id={formId}
+    data-upload-endpoint={uploadEndpoint}
+    action={endpoint}
+    method="post"
+    class={className}
+  >
+    <slot />
+    <input type="hidden" name="form_id" value={formId} />
+    <input type="hidden" name="started_at" value="" />
+    {CLICK_ID_KEYS.map((key) => <input type="hidden" name={key} value="" />)}
+    <div class="lead-form-hp" aria-hidden="true">
+      <label for={`${formId}-website`}>Leave this field empty</label>
+      <input id={`${formId}-website`} type="text" name="website" tabindex="-1" autocomplete="off" />
+    </div>
+    <p data-form-status role="status" aria-live="polite" class="lead-form-status sm:col-span-2"></p>
+  </form>
+  <div data-form-success hidden tabindex="-1" class="lead-form-success">
+    <p class="lead-form-success-title">Thank you</p>
+    <p>{successMessage}</p>
+  </div>
+  <div data-form-receipt hidden class="lead-form-receipt" aria-label="Demo receipt"></div>
+</div>
+
+<style is:global>
+  .lead-form-hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .lead-form-status:empty {
+    display: none;
+  }
+  .lead-form-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .lead-form-status[data-tone='error'] {
+    color: var(--color-danger);
+  }
+  .lead-form-success {
+    border-left: 4px solid var(--color-success);
+    padding: 0.25rem 0 0.25rem 1rem;
+    outline: none;
+  }
+  .lead-form-success-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+  .lead-form-receipt {
+    margin-top: 1.5rem;
+    border: 1px dashed var(--color-line-strong);
+    background: var(--color-surface);
+    padding: 1.25rem;
+    font-size: 0.875rem;
+  }
+  .lead-form-receipt .receipt-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent-ink);
+    font-weight: 700;
+  }
+  .lead-form-receipt .receipt-lede {
+    margin: 0.35rem 0 1rem;
+    color: var(--color-ink-muted);
+  }
+  .lead-form-receipt .receipt-list > div {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--color-line);
+  }
+  .lead-form-receipt dt {
+    color: var(--color-ink-muted);
+  }
+  .lead-form-receipt dd {
+    font-family: var(--font-mono);
+    word-break: break-word;
+  }
+  .lead-form-receipt .receipt-details {
+    margin-top: 0.75rem;
+  }
+  .lead-form-receipt summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .lead-form-receipt pre {
+    margin-top: 0.5rem;
+    max-height: 18rem;
+    overflow: auto;
+    background: var(--color-inverse);
+    color: var(--color-on-inverse);
+    padding: 0.9rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+</style>
+
+<script>
+  import { enhanceLeadForms } from './client';
+  enhanceLeadForms();
+</script>

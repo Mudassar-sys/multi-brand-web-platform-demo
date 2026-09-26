@@ -1,0 +1,45 @@
+/**
+ * Icon names that page data may use. Kept in a plain module (no component
+ * imports) so the section catalog generator can read it outside Astro.
+ */
+export const iconNames = [
+  'arrow-right',
+  'arrow-up-right',
+  'check',
+  'x',
+  'calendar',
+  'clock',
+  'map-pin',
+  'phone',
+  'mail',
+  'ruler',
+  'gauge',
+  'wrench',
+  'cpu',
+  'cog',
+  'truck',
+  'shield-check',
+  'layers',
+  'sparkles',
+  'palette',
+  'paint-roller',
+  'paintbrush',
+  'image',
+  'sun',
+  'droplets',
+  'building',
+  'store',
+  'coffee',
+  'graduation-cap',
+  'house',
+  'zap',
+  'box',
+  'scan-line',
+  'file-text',
+  'upload',
+  'timer',
+  'hammer',
+  'leaf',
+] as const;
+
+export type IconName = (typeof iconNames)[number];

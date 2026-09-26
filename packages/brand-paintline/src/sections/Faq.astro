@@ -1,0 +1,35 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { faq } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof faq.schema> & { index?: number };
+const { id, eyebrow, heading, intro, items, index = 0 } = Astro.props;
+const headingId = `${id ?? `faq-${index}`}-title`;
+---
+
+<Section id={id} labelledBy={headingId}>
+  <Container width="default">
+    <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} align="center" class="mx-auto" />
+    <div class="mt-12 space-y-3">
+      {
+        items.map((item) => (
+          <details class="group rounded-card bg-surface-raised border-line border px-6 open:shadow-sm">
+            <summary class="focus-visible:outline-focus flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 [&::-webkit-details-marker]:hidden">
+              <span class="text-lg">{item.question}</span>
+              <span
+                class="bg-surface-muted group-open:bg-marigold inline-flex size-9 shrink-0 items-center justify-center rounded-full text-xl leading-none transition-transform duration-200 group-open:rotate-45"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            <p class="text-ink-muted pb-6 leading-relaxed">{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </Container>
+</Section>

@@ -1,0 +1,86 @@
+---
+import type { z } from 'astro/zod';
+import LeadFormShell from '@platform/forms/LeadFormShell.astro';
+import UploadField from '@platform/forms/UploadField.astro';
+import Button from '@platform/ui-core/primitives/Button.astro';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Icon from '@platform/ui-core/primitives/Icon.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { quoteForm } from '../schemas';
+import Field from './Field.astro';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof quoteForm.schema> & { index?: number };
+const {
+  id = 'quote',
+  eyebrow,
+  heading,
+  intro,
+  formId,
+  fields = [],
+  surfaceOptions = [],
+  submitLabel = 'Request a quote',
+  successMessage,
+  aside,
+} = Astro.props;
+const headingId = `${id}-title`;
+const has = (name: (typeof fields)[number]) => fields.includes(name);
+const uploadsEnabled = import.meta.env.PUBLIC_UPLOADS_ENABLED === 'true';
+---
+
+<Section id={id} labelledBy={headingId}>
+  <Container width="wide" class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} />
+      {
+        aside && (
+          <div class="rounded-card bg-surface-muted mt-8 p-6">
+            <p class="font-display text-xl">{aside.title}</p>
+            <ul class="mt-4 space-y-3" role="list">
+              {aside.points.map((point) => (
+                <li class="flex gap-3">
+                  <span class="bg-marigold mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full">
+                    <Icon name="check" class="size-3.5" />
+                  </span>
+                  <span class="leading-relaxed">{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+    <div class="lg:col-span-7">
+      <div class="rounded-card bg-surface-raised border-line border p-6 shadow-[0_30px_60px_-40px_rgb(30_26_23/0.4)] sm:p-9">
+        <LeadFormShell formId={formId} successMessage={successMessage} class="grid gap-5 sm:grid-cols-2">
+          <Field formId={formId} name="first_name" label="First name" required autocomplete="given-name" maxlength={60} />
+          {has('lastName') && <Field formId={formId} name="last_name" label="Last name" autocomplete="family-name" maxlength={60} />}
+          <Field formId={formId} name="email" label="Email" type="email" required autocomplete="email" class="sm:col-span-2" />
+          {has('phone') && <Field formId={formId} name="phone" label="Phone" type="tel" autocomplete="tel" maxlength={30} />}
+          {has('company') && <Field formId={formId} name="company" label="Business name" autocomplete="organization" />}
+          {has('city') && <Field formId={formId} name="city" label="City" autocomplete="address-level2" maxlength={80} />}
+          {has('wallSize') && <Field formId={formId} name="wall_size" label="Rough wall size" hint="For example 4 m x 2.5 m" maxlength={60} />}
+          {has('surface') && <Field formId={formId} name="surface" label="Wall surface" type="select" options={surfaceOptions} />}
+          {has('message') && <Field formId={formId} name="message" label="Your idea" type="textarea" class="sm:col-span-2" />}
+          {
+            has('attachment') && (
+              <UploadField
+                formId={formId}
+                label="Photo of the wall or artwork"
+                enabled={uploadsEnabled}
+                class="sm:col-span-2"
+                inputClass="border-line-strong bg-surface block w-full rounded-2xl border border-dashed px-4 py-4 text-sm file:mr-4 file:rounded-full file:border-0 file:bg-cobalt file:px-4 file:py-2 file:font-semibold file:text-white"
+              />
+            )
+          }
+          <div class="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-ink-muted text-xs leading-relaxed">
+              Demo form. Submissions run in dry-run mode and are not stored by any provider.
+            </p>
+            <Button type="submit" size="lg" icon="arrow-right" data-submit>{submitLabel}</Button>
+          </div>
+        </LeadFormShell>
+      </div>
+    </div>
+  </Container>
+</Section>

@@ -1,0 +1,60 @@
+---
+import ConsentBanner from '@platform/tracking/ConsentBanner.astro';
+import TrackingBody from '@platform/tracking/TrackingBody.astro';
+import TrackingHead from '@platform/tracking/TrackingHead.astro';
+import { getSiteEnv } from '@platform/tracking/env';
+import type { BrandConfig } from './brand';
+import EnvBadge from './EnvBadge.astro';
+
+interface Props {
+  brand: BrandConfig;
+  title: string;
+  description: string;
+  noindex?: boolean;
+  bodyClass?: string;
+}
+const { brand, title, description, noindex = false, bodyClass } = Astro.props;
+const siteEnv = getSiteEnv();
+
+// Canonical URLs always point at the production site and never end in a slash.
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const canonical = Astro.site ? new URL(path, Astro.site).href.replace(/\/$/, path === '/' ? '/' : '') : undefined;
+const fullTitle = path === '/' ? title : `${title} | ${brand.shortName}`;
+---
+
+<!doctype html>
+<html lang={brand.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <TrackingHead brand={brand.id} siteEnv={siteEnv} config={brand.tracking} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={brand.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="theme-color" content={brand.themeColor} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <slot name="head" />
+  </head>
+  <body class:list={['bg-surface text-ink min-h-dvh antialiased', bodyClass]} data-site-env={siteEnv} data-brand={brand.id}>
+    <TrackingBody config={brand.tracking} />
+    <a
+      href="#main"
+      class="bg-action text-on-action sr-only z-50 px-4 py-2 font-semibold focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      >Skip to content</a
+    >
+    <slot name="header" />
+    <main id="main" tabindex="-1" class="focus:outline-none">
+      <slot />
+    </main>
+    <slot name="footer" />
+    <ConsentBanner brandName={brand.name} />
+    {siteEnv !== 'production' && <EnvBadge siteEnv={siteEnv} />}
+  </body>
+</html>

@@ -1,0 +1,69 @@
+---
+import type { z } from 'astro/zod';
+import Button from '@platform/ui-core/primitives/Button.astro';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Heading from '@platform/ui-core/primitives/Heading.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import MuralArt from '../art/MuralArt.astro';
+import type { hero } from '../schemas';
+
+type Props = z.infer<typeof hero.schema> & { index?: number };
+const { id, eyebrow, heading, subheading, primaryCta, secondaryCta, badges = [], art = 'sunrise' } = Astro.props;
+const headingId = `${id ?? 'hero'}-title`;
+---
+
+<Section id={id} labelledBy={headingId} spacing="md" class="overflow-hidden">
+  <div class="bg-grain pointer-events-none absolute inset-0 -z-10 opacity-60" aria-hidden="true"></div>
+  <Container width="wide" class="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+    <div class="lg:col-span-6">
+      {
+        eyebrow && (
+          <p class="font-eyebrow text-eyebrow text-accent-ink mb-6 inline-flex items-center gap-2 uppercase">
+            <span class="bg-marigold inline-block size-2.5 rounded-full" aria-hidden="true" />
+            {eyebrow}
+          </p>
+        )
+      }
+      <Heading level={1} size="display" id={headingId}>{heading}</Heading>
+      <p class="text-lead text-ink-muted mt-6 max-w-xl text-pretty">{subheading}</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <Button href={primaryCta.href} size="lg" icon="arrow-right">{primaryCta.label}</Button>
+        {
+          secondaryCta && (
+            <Button href={secondaryCta.href} size="lg" variant="secondary">
+              {secondaryCta.label}
+            </Button>
+          )
+        }
+      </div>
+      {
+        badges.length > 0 && (
+          <ul class="mt-10 flex flex-wrap gap-2" role="list">
+            {badges.map((badge) => (
+              <li class="border-line-strong rounded-full border px-3.5 py-1.5 text-sm font-semibold">{badge}</li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+    <figure class="relative lg:col-span-6">
+      <div class="bg-marigold absolute -top-6 -right-4 -z-10 size-40 rounded-full sm:size-56" aria-hidden="true"></div>
+      <div class="bg-blush absolute -bottom-8 -left-6 -z-10 size-32 rounded-[40%] sm:size-44" aria-hidden="true"></div>
+      <div class="rounded-card bg-surface-raised relative overflow-hidden p-3 shadow-[0_40px_80px_-40px_rgb(30_26_23/0.45)]">
+        <div class="relative aspect-[4/3] overflow-hidden rounded-[1.1rem]">
+          <MuralArt variant={art} />
+          <svg viewBox="0 0 400 300" class="absolute inset-0 h-full w-full" aria-hidden="true">
+            <rect x="0" y="262" width="400" height="38" fill="#1e1a17" opacity="0.14"></rect>
+            <g fill="#1e1a17">
+              <circle cx="318" cy="196" r="9"></circle>
+              <path d="M306 262 L309 214 Q318 204 327 214 L330 262 Z"></path>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <figcaption class="text-ink-muted mt-4 text-sm">
+        Concept artwork rendered for this demo brand. Figure shown for scale.
+      </figcaption>
+    </figure>
+  </Container>
+</Section>

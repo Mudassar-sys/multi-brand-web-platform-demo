@@ -1,0 +1,80 @@
+---
+import type { z } from 'astro/zod';
+import Button from '@platform/ui-core/primitives/Button.astro';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Heading from '@platform/ui-core/primitives/Heading.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { hero } from '../schemas';
+import ChuckDrawing from '../art/ChuckDrawing.astro';
+import LatheDrawing from '../art/LatheDrawing.astro';
+
+type Props = z.infer<typeof hero.schema> & { index?: number };
+const { id, eyebrow, heading, subheading, primaryCta, secondaryCta, highlights = [], visual = 'lathe' } =
+  Astro.props;
+const headingId = `${id ?? 'hero'}-title`;
+---
+
+<Section id={id} labelledBy={headingId} spacing="lg" class="overflow-hidden">
+  <div
+    class="bg-blueprint pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_70%_40%,black,transparent_70%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <Container width="wide" class="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+    <div class:list={[visual === 'none' ? 'lg:col-span-9' : 'lg:col-span-7']}>
+      {
+        eyebrow && (
+          <p class="font-eyebrow text-eyebrow text-accent-ink mb-6 flex items-center gap-3 uppercase">
+            <span class="bg-accent inline-block size-2.5" aria-hidden="true" />
+            {eyebrow}
+          </p>
+        )
+      }
+      <Heading level={1} size="display" id={headingId}>{heading}</Heading>
+      <p class="text-lead text-ink-muted mt-6 max-w-2xl text-pretty">{subheading}</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <Button href={primaryCta.href} size="lg" icon="arrow-right">{primaryCta.label}</Button>
+        {
+          secondaryCta && (
+            <Button href={secondaryCta.href} size="lg" variant="secondary">
+              {secondaryCta.label}
+            </Button>
+          )
+        }
+      </div>
+      {
+        highlights.length > 0 && (
+          <dl class="border-line mt-12 grid grid-cols-2 border-t sm:grid-cols-4">
+            {highlights.map((item) => (
+              <div class="border-line border-b py-4 pr-4 sm:border-r sm:border-b-0 sm:pl-4 sm:first:pl-0 sm:last:border-r-0">
+                <dt class="font-mono text-ink-muted text-[0.7rem] tracking-[0.14em] uppercase">
+                  {item.label}
+                </dt>
+                <dd class="font-display mt-1 text-xl font-bold tracking-tight">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+    </div>
+    {
+      visual !== 'none' && (
+        <figure class="lg:col-span-5">
+          <div class="border-line-strong bg-surface-raised/80 rounded-card relative border p-4 shadow-[0_30px_60px_-30px_rgb(15_19_24/0.35)] backdrop-blur-sm sm:p-6">
+            <div class="border-line text-ink-muted mb-4 flex items-center justify-between border-b pb-3 font-mono text-[0.68rem] tracking-[0.14em] uppercase">
+              <span>DWG KL-250</span>
+              <span>REV C</span>
+              <span>Scale 1:12</span>
+            </div>
+            {visual === 'lathe' ? <LatheDrawing /> : <ChuckDrawing class="mx-auto max-w-sm" />}
+            <span class="border-ink absolute -top-1.5 -left-1.5 size-3 border-t-2 border-l-2" aria-hidden="true" />
+            <span class="border-ink absolute -right-1.5 -bottom-1.5 size-3 border-r-2 border-b-2" aria-hidden="true" />
+          </div>
+          <figcaption class="text-ink-muted mt-3 font-mono text-[0.68rem] tracking-[0.12em] uppercase">
+            Illustration. Demo product, not a real machine.
+          </figcaption>
+        </figure>
+      )
+    }
+  </Container>
+</Section>

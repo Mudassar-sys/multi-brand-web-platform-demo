@@ -1,0 +1,43 @@
+---
+import type { z } from 'astro/zod';
+import Button from '@platform/ui-core/primitives/Button.astro';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Heading from '@platform/ui-core/primitives/Heading.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import MuralArt from '../art/MuralArt.astro';
+import type { ctaBand } from '../schemas';
+
+type Props = z.infer<typeof ctaBand.schema> & { index?: number };
+const { id, heading, body, primaryCta, secondaryCta, art, index = 0 } = Astro.props;
+const headingId = `${id ?? `cta-${index}`}-title`;
+---
+
+<Section id={id} labelledBy={headingId} spacing="sm">
+  <Container width="wide">
+    <div class="rounded-card bg-inverse text-on-inverse relative grid overflow-hidden md:grid-cols-12" data-tone="inverse">
+      <div class="p-8 sm:p-12 md:col-span-7">
+        <Heading level={2} size="xl" id={headingId}>{heading}</Heading>
+        {body && <p class="text-ink-muted mt-4 max-w-xl text-lg text-pretty">{body}</p>}
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href={primaryCta.href} size="lg" icon="arrow-right">{primaryCta.label}</Button>
+          {
+            secondaryCta && (
+              <Button href={secondaryCta.href} size="lg" variant="secondary">
+                {secondaryCta.label}
+              </Button>
+            )
+          }
+        </div>
+      </div>
+      {
+        art && (
+          <div class="relative min-h-48 md:col-span-5">
+            <div class="absolute inset-0">
+              <MuralArt variant={art} label="" />
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </Container>
+</Section>

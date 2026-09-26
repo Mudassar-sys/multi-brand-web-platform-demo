@@ -1,0 +1,70 @@
+---
+/** Front view of a three-jaw chuck with a degree scale. Pure SVG. */
+interface Props {
+  class?: string;
+  label?: string;
+}
+const { class: className, label = 'Line drawing of a three-jaw lathe chuck, front view' } =
+  Astro.props;
+const ticks = Array.from({ length: 72 }, (_, i) => i * 5);
+const jaws = [0, 120, 240];
+const bolts = [60, 180, 300];
+// An empty label marks the drawing as decorative.
+const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': 'true' };
+---
+
+<svg
+  viewBox="-200 -200 400 400"
+  {...a11y}
+  class:list={['h-auto w-full', className]}
+  fill="none"
+>
+  <g class="stroke-line-strong" stroke-width="1">
+    {
+      ticks.map((deg) => (
+        <line
+          x1="0"
+          y1={deg % 30 === 0 ? -186 : -180}
+          x2="0"
+          y2="-172"
+          transform={`rotate(${deg})`}
+          stroke-width={deg % 30 === 0 ? 1.6 : 0.8}
+        />
+      ))
+    }
+  </g>
+  <circle r="160" class="stroke-ink fill-surface-raised" stroke-width="1.6"></circle>
+  <circle r="128" class="stroke-line-strong" stroke-width="1"></circle>
+  <circle r="42" class="stroke-ink fill-surface" stroke-width="1.6"></circle>
+  <circle r="18" class="stroke-ink fill-accent" stroke-width="1.6"></circle>
+  {
+    jaws.map((deg) => (
+      <g transform={`rotate(${deg})`}>
+        <rect
+          x="-16"
+          y="-148"
+          width="32"
+          height="96"
+          rx="4"
+          class="stroke-ink fill-surface-raised"
+          stroke-width="1.6"
+        />
+        <line x1="-16" y1="-120" x2="16" y2="-120" class="stroke-line-strong" />
+        <line x1="-16" y1="-98" x2="16" y2="-98" class="stroke-line-strong" />
+        <line x1="-16" y1="-76" x2="16" y2="-76" class="stroke-line-strong" />
+      </g>
+    ))
+  }
+  {
+    bolts.map((deg) => (
+      <g transform={`rotate(${deg}) translate(0 -104)`}>
+        <circle r="9" class="stroke-ink" stroke-width="1.4" />
+        <circle r="3.5" class="fill-ink" />
+      </g>
+    ))
+  }
+  <line x1="-196" y1="0" x2="196" y2="0" class="stroke-accent" stroke-width="1" stroke-dasharray="10 4 2 4"
+  ></line>
+  <line x1="0" y1="-196" x2="0" y2="196" class="stroke-accent" stroke-width="1" stroke-dasharray="10 4 2 4"
+  ></line>
+</svg>

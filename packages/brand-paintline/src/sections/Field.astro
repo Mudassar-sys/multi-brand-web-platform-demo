@@ -1,0 +1,62 @@
+---
+interface Props {
+  name: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'textarea' | 'select';
+  required?: boolean;
+  autocomplete?: string;
+  options?: string[];
+  hint?: string;
+  maxlength?: number;
+  class?: string;
+  formId: string;
+}
+const {
+  name,
+  label,
+  type = 'text',
+  required = false,
+  autocomplete,
+  options = [],
+  hint,
+  maxlength,
+  class: className,
+  formId,
+} = Astro.props;
+const id = `${formId}-${name}`;
+const hintId = hint ? `${id}-hint` : undefined;
+const control =
+  'border-line-strong bg-surface text-ink block w-full rounded-2xl border px-4 py-3 text-base transition-colors focus:border-cobalt focus:outline-2 focus:outline-offset-0 focus:outline-focus aria-[invalid=true]:border-danger';
+---
+
+<div class:list={['flex flex-col gap-1.5', className]}>
+  <label for={id} class="text-sm font-bold">
+    {label}
+    {required ? <span class="text-accent-ink" aria-hidden="true"> *</span> : <span class="text-ink-muted font-normal"> (optional)</span>}
+  </label>
+  {
+    type === 'textarea' ? (
+      <textarea id={id} name={name} rows="4" required={required} maxlength={maxlength ?? 2000} aria-describedby={hintId} class={control} />
+    ) : type === 'select' ? (
+      <select id={id} name={name} required={required} aria-describedby={hintId} class={control}>
+        <option value="">Choose one</option>
+        {options.map((option) => (
+          <option value={option}>{option}</option>
+        ))}
+      </select>
+    ) : (
+      <input
+        id={id}
+        name={name}
+        type={type}
+        required={required}
+        autocomplete={autocomplete}
+        maxlength={maxlength ?? 120}
+        aria-describedby={hintId}
+        class={control}
+      />
+    )
+  }
+  {hint && <p id={hintId} class="text-ink-muted text-xs">{hint}</p>}
+  <p data-error-for={name} class="text-danger hidden text-sm font-medium"></p>
+</div>

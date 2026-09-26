@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+**/.astro
+**/.vercel
+**/dist
+**/node_modules
+proof
+tests/test-results
+tests/playwright-report
+apps/*/SECTIONS.md

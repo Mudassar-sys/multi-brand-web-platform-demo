@@ -1,0 +1,48 @@
+title: Office feature walls printed in a day
+description: Turn a blank office wall into a brand wall in one print day, with no vinyl seams. Send a photo for a price range within one business day.
+kind: landing
+noindex: true
+sections:
+  - type: hero
+    eyebrow: For offices and studios
+    heading: Your brand on the wall, printed in a day
+    subheading: Turn a blank reception or meeting-room wall into a brand wall without vinyl seams or weeks of disruption. Send a photo and we will send a mockup.
+    primaryCta: { label: Get my mockup, href: '#quote' }
+    badges: [One print day, Brand colour matching]
+    art: geo
+
+  - type: serviceCards
+    heading: Popular office walls
+    cards:
+      - icon: store
+        title: Reception walls
+        body: A first impression in your brand colours, sized to the space.
+      - icon: layers
+        title: Meeting rooms
+        body: Distinct walls that make rooms easy to name and find.
+      - icon: sparkles
+        title: Break-out areas
+        body: Relaxed, colourful walls where teams actually want to sit.
+
+  - type: gallery
+    heading: Office style ideas
+    items:
+      - { art: geo, title: Blocks, caption: Bold shapes built from your brand palette., space: Reception }
+      - { art: wave, title: Tide, caption: Calm waves for a focus room., space: Meeting room }
+      - { art: abstract, title: Loose shapes, caption: Relaxed forms for a break-out area., space: Break-out }
+
+  - type: quoteForm
+    id: quote
+    heading: Get your office mockup
+    formId: lp-office-walls
+    fields: [company, wallSize, attachment, message]
+    submitLabel: Send my wall photo
+    successMessage: Thanks. We will send a mockup and price range within one business day.
+
+  - type: faq
+    heading: Questions from office managers
+    items:
+      - question: Can you print outside office hours?
+        answer: Yes. Evening and weekend print days are common for offices.
+      - question: Do you match brand colours?
+        answer: We match to your brand guide and print a small colour strip for sign-off first.

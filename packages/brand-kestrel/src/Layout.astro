@@ -1,0 +1,23 @@
+---
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/jetbrains-mono';
+import BaseLayout from '@platform/ui-core/BaseLayout.astro';
+import type { BrandConfig } from '@platform/ui-core/brand';
+import Footer from './Footer.astro';
+import Header from './Header.astro';
+
+interface Props {
+  brand: BrandConfig;
+  title: string;
+  description: string;
+  kind?: 'page' | 'landing';
+  noindex?: boolean;
+}
+const { brand, title, description, kind = 'page', noindex = false } = Astro.props;
+---
+
+<BaseLayout brand={brand} title={title} description={description} noindex={noindex}>
+  <Header slot="header" brand={brand} minimal={kind === 'landing'} />
+  <slot />
+  <Footer slot="footer" brand={brand} />
+</BaseLayout>

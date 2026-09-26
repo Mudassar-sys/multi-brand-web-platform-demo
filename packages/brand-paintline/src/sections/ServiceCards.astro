@@ -1,0 +1,41 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Icon from '@platform/ui-core/primitives/Icon.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { serviceCards } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof serviceCards.schema> & { index?: number };
+const { id, eyebrow, heading, intro, cards, index = 0 } = Astro.props;
+const headingId = `${id ?? `services-${index}`}-title`;
+const tints = ['bg-blush', 'bg-marigold/70', 'bg-sage/60', 'bg-blush', 'bg-marigold/70', 'bg-sage/60'];
+---
+
+<Section id={id} labelledBy={headingId}>
+  <Container width="wide">
+    <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} />
+    <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
+      {
+        cards.map((card, i) => (
+          <li class="rounded-card bg-surface-raised border-line flex flex-col border p-7 transition-transform duration-300 hover:-translate-y-1">
+            <span class:list={['inline-flex size-12 items-center justify-center rounded-2xl', tints[i]]}>
+              <Icon name={card.icon} class="size-6" />
+            </span>
+            <h3 class="font-display mt-6 text-2xl tracking-tight">{card.title}</h3>
+            <p class="text-ink-muted mt-2 flex-1 leading-relaxed">{card.body}</p>
+            {card.link && (
+              <a
+                href={card.link.href}
+                class="text-accent-ink mt-5 inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
+              >
+                {card.link.label}
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </Container>
+</Section>

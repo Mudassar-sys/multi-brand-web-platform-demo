@@ -1,0 +1,28 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import Prose from '@platform/ui-core/Prose.astro';
+import type { richText } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof richText.schema> & { index?: number };
+const { id, eyebrow, heading, paragraphs, pullQuote, index = 0 } = Astro.props;
+const headingId = `${id ?? `text-${index}`}-title`;
+---
+
+<Section id={id} labelledBy={headingId}>
+  <Container width="wide" class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <SectionIntro eyebrow={eyebrow} heading={heading} headingId={headingId} />
+      <Prose paragraphs={paragraphs} class="text-ink-muted mt-8 text-lg leading-relaxed" />
+    </div>
+    {
+      pullQuote && (
+        <aside class="lg:col-span-5 lg:pt-16" aria-label="Highlight">
+          <p class="font-display border-marigold border-l-4 pl-6 text-3xl leading-snug tracking-tight italic">{pullQuote}</p>
+        </aside>
+      )
+    }
+  </Container>
+</Section>

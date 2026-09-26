@@ -1,0 +1,28 @@
+---
+import Layout from '@platform/brand-kestrel/Layout.astro';
+import { registry } from '@platform/brand-kestrel/registry';
+import PageRenderer from '@platform/ui-core/PageRenderer.astro';
+import { getCollection } from 'astro:content';
+import brand from '../../brand.config';
+import '../styles/global.css';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((page) => ({
+    params: { slug: page.id === 'index' ? undefined : page.id },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+---
+
+<Layout
+  brand={brand}
+  title={page.data.title}
+  description={page.data.description}
+  kind={page.data.kind}
+  noindex={page.data.noindex}
+>
+  <PageRenderer sections={page.data.sections} registry={registry} />
+</Layout>

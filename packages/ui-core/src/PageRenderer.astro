@@ -1,0 +1,22 @@
+---
+/**
+ * Renders a page entry. Each item in `sections` carries a `type` that
+ * matches a key in the brand's registry. The content schema has already
+ * validated every item, so an unknown type here is a programming error.
+ */
+interface Props {
+  sections: Array<Record<string, unknown>>;
+  registry: Record<string, (props: any) => any>;
+}
+const { sections, registry } = Astro.props;
+---
+
+{
+  sections.map((section, index) => {
+    const Component = registry[String(section.type)];
+    if (!Component) {
+      throw new Error(`No component registered for section type "${section.type}"`);
+    }
+    return <Component {...section} index={index} />;
+  })
+}

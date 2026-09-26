@@ -1,0 +1,92 @@
+title: Compact CNC lathes for small machine shops
+description: Kestrel Machine Co. supplies compact CNC lathes sized for two-bay shops, with rigging, training and showroom demo days included. A fictional demo brand.
+sections:
+  - type: hero
+    eyebrow: Compact CNC lathes
+    heading: Production-grade turning, sized for a two-bay shop
+    subheading: Kestrel lathes bring rigid cast beds and conversational control to small machine shops. Every machine ships with rigging, training and a first-part run on your own drawing.
+    primaryCta: { label: Book a showroom demo, href: /contact }
+    secondaryCta: { label: Compare machines, href: /machines }
+    highlights:
+      - { label: Swing, value: 250 mm }
+      - { label: Spindle, value: '4,000 rpm' }
+      - { label: Footprint, value: 2.1 m }
+      - { label: Power, value: 230 V option }
+    visual: lathe
+
+  - type: featureGrid
+    id: why
+    eyebrow: Why Kestrel
+    heading: Built for short runs and fast changeovers
+    intro: Small shops win on turnaround. Every Kestrel is set up to go from drawing to first part in an afternoon.
+    columns: 3
+    features:
+      - icon: gauge
+        title: Rigid cast bed
+        body: A heavy cast-iron bed and hardened box ways damp chatter on interrupted cuts and tough alloys.
+      - icon: cpu
+        title: Conversational control
+        body: Program simple turned parts at the machine in plain steps. No CAM seat needed for everyday work.
+      - icon: wrench
+        title: Quick-change tooling
+        body: A wedge-type tool post and preset holders bring changeovers down to minutes, not hours.
+      - icon: truck
+        title: Delivered and rigged
+        body: We deliver, level and anchor the machine, then cut a test part with you before we leave.
+      - icon: graduation-cap
+        title: Training included
+        body: Two days of on-site training for operators who are new to CNC turning, with written setup sheets.
+      - icon: shield-check
+        title: Full enclosure
+        body: Interlocked doors, chip guarding and coolant containment come standard on every model.
+
+  - type: processSteps
+    eyebrow: How buying works
+    heading: From first call to first chip in three weeks
+    intro: One applications engineer stays with you from the first drawing to the first good part.
+    steps:
+      - title: Part review
+        body: Send a drawing of a part you turn today. We confirm fit, tooling and cycle time.
+        duration: Day 1
+      - title: Showroom demo
+        body: Watch your part cut on the machine you are considering, and bring your operator.
+        duration: Week 1
+      - title: Delivery and rigging
+        body: We handle freight, rigging, levelling and power checks at your shop.
+        duration: Week 3
+      - title: Training and first part
+        body: On-site training ends with your operator running the first production part.
+        duration: Week 3
+
+  - type: comparisonTable
+    eyebrow: Buying a first CNC lathe
+    heading: Why not a used full-size lathe?
+    intro: Used machines can be a bargain, but small shops pay for the space, the rigging and the unknowns.
+    columns: { ours: Kestrel KL-250, other: Used full-size lathe }
+    rows:
+      - { label: Fits a 3 m bay, ours: true, other: false }
+      - { label: Single-phase power option, ours: true, other: false }
+      - { label: Setup and training, ours: Included, other: Extra }
+      - { label: Parts and service contact, ours: One number, other: Varies }
+      - { label: Typical lead time, ours: 3 weeks, other: Varies }
+
+  - type: faq
+    id: faq
+    eyebrow: Questions
+    heading: Before you book a demo
+    items:
+      - question: What power supply do I need?
+        answer: The KL-160 runs on single-phase 230 V. The KL-250 is available for single-phase or three-phase supply; we confirm your panel during the part review.
+      - question: Can I bring my own part to the showroom?
+        answer: Yes. Send the drawing and material ahead of time and we will program and cut it during your demo so you can check the finish yourself.
+      - question: How much floor space does a Kestrel need?
+        answer: The KL-250 needs about 2.1 m by 1.2 m plus door clearance. We send a floor plan template after the part review.
+      - question: Is this a real company?
+        answer: No. Kestrel Machine Co. is a fictional demo brand used to show a multi-brand website platform. No machines are sold here.
+
+  - type: ctaBand
+    heading: See the KL-250 cut your part
+    body: Book a one-hour showroom slot. Bring a drawing and leave with a finished sample and a quote.
+    primaryCta: { label: Book a demo, href: /contact }
+    secondaryCta: { label: View specs, href: /machines }
+    tone: accent

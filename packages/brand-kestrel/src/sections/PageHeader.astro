@@ -1,0 +1,31 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Heading from '@platform/ui-core/primitives/Heading.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { pageHeader } from '../schemas';
+
+type Props = z.infer<typeof pageHeader.schema> & { index?: number };
+const { id, eyebrow, heading, intro } = Astro.props;
+const headingId = `${id ?? 'page'}-title`;
+---
+
+<Section id={id} labelledBy={headingId} spacing="sm" class="border-line border-b">
+  <div
+    class="bg-blueprint pointer-events-none absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black,transparent)]"
+    aria-hidden="true"
+  >
+  </div>
+  <Container width="wide" class="pt-6 pb-2 sm:pt-10">
+    {
+      eyebrow && (
+        <p class="font-eyebrow text-eyebrow text-accent-ink mb-5 flex items-center gap-3 uppercase">
+          <span class="bg-accent inline-block size-2.5" aria-hidden="true" />
+          {eyebrow}
+        </p>
+      )
+    }
+    <Heading level={1} size="xl" id={headingId} class="max-w-4xl">{heading}</Heading>
+    {intro && <p class="text-lead text-ink-muted mt-5 max-w-2xl text-pretty">{intro}</p>}
+  </Container>
+</Section>

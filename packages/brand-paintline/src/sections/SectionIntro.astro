@@ -1,0 +1,19 @@
+---
+import Heading from '@platform/ui-core/primitives/Heading.astro';
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+  headingId: string;
+  align?: 'start' | 'center';
+  class?: string;
+}
+const { eyebrow, heading, intro, headingId, align = 'start', class: className } = Astro.props;
+---
+
+<header class:list={['max-w-3xl', align === 'center' && 'mx-auto text-center', className]}>
+  {eyebrow && <p class="font-eyebrow text-eyebrow text-accent-ink mb-4 uppercase">{eyebrow}</p>}
+  <Heading level={2} size="lg" id={headingId}>{heading}</Heading>
+  {intro && <p class="text-ink-muted mt-4 text-lg text-pretty">{intro}</p>}
+</header>

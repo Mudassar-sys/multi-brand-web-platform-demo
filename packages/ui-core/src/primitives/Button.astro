@@ -1,0 +1,62 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'inverse';
+  size?: 'md' | 'lg';
+  icon?: IconName;
+  class?: string;
+  [key: string]: unknown;
+}
+const {
+  href,
+  type = 'button',
+  variant = 'primary',
+  size = 'md',
+  icon,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const base =
+  'group inline-flex items-center justify-center gap-2 rounded-button font-semibold tracking-tight transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-60';
+const variants = {
+  primary: 'bg-action text-on-action hover:bg-action-hover',
+  secondary: 'border border-line-strong bg-transparent text-current hover:bg-ink/5',
+  ghost: 'bg-transparent text-current underline-offset-4 hover:underline',
+  inverse: 'bg-on-inverse text-inverse hover:bg-on-inverse/90',
+};
+const sizes = {
+  md: 'min-h-11 px-5 text-sm',
+  lg: 'min-h-13 px-7 text-base',
+};
+const classes = [base, variants[variant], sizes[size], className];
+const external = href?.startsWith('http');
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class:list={classes}
+      {...(external ? { rel: 'noopener', target: '_blank' } : {})}
+      {...rest}
+    >
+      <slot />
+      {icon && (
+        <Icon
+          name={icon}
+          class="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+        />
+      )}
+    </a>
+  ) : (
+    <button type={type} class:list={classes} {...rest}>
+      <slot />
+      {icon && <Icon name={icon} class="size-4" />}
+    </button>
+  )
+}

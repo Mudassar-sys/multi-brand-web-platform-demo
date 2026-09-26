@@ -1,0 +1,53 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { surfaceGuide } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof surfaceGuide.schema> & { index?: number };
+const { id, eyebrow, heading, intro, surfaces, index = 0 } = Astro.props;
+const headingId = `${id ?? `surfaces-${index}`}-title`;
+const ratings = {
+  great: { label: 'Great fit', dot: 'bg-teal' },
+  good: { label: 'Good fit', dot: 'bg-marigold' },
+  ask: { label: 'Ask us', dot: 'bg-terracotta' },
+};
+---
+
+<Section id={id} labelledBy={headingId}>
+  <Container width="wide" class="grid gap-10 lg:grid-cols-12">
+    <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} class="lg:col-span-4" />
+    <div class="rounded-card border-line bg-surface-raised overflow-hidden border lg:col-span-8">
+      <table class="w-full border-collapse text-left">
+        <caption class="sr-only">{heading}</caption>
+        <thead class="bg-surface-muted">
+          <tr>
+            <th scope="col" class="px-5 py-3.5 text-sm font-bold">Surface</th>
+            <th scope="col" class="px-5 py-3.5 text-sm font-bold">Fit</th>
+            <th scope="col" class="hidden px-5 py-3.5 text-sm font-bold sm:table-cell">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            surfaces.map((surface) => (
+              <tr class="border-line border-t align-top">
+                <th scope="row" class="px-5 py-4 font-semibold">
+                  {surface.name}
+                  <span class="text-ink-muted mt-1 block text-sm font-normal sm:hidden">{surface.note}</span>
+                </th>
+                <td class="px-5 py-4">
+                  <span class="inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap">
+                    <span class:list={['size-2.5 rounded-full', ratings[surface.rating].dot]} aria-hidden="true" />
+                    {ratings[surface.rating].label}
+                  </span>
+                </td>
+                <td class="text-ink-muted hidden px-5 py-4 text-sm leading-relaxed sm:table-cell">{surface.note}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Container>
+</Section>

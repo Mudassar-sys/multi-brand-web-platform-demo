@@ -1,0 +1,56 @@
+---
+import type { z } from 'astro/zod';
+import Button from '@platform/ui-core/primitives/Button.astro';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Icon from '@platform/ui-core/primitives/Icon.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { eventDetails } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof eventDetails.schema> & { index?: number };
+const { id, eyebrow, heading, intro, date, time, location, agenda, cta, note, index = 0 } = Astro.props;
+const headingId = `${id ?? `event-${index}`}-title`;
+const facts = [
+  { icon: 'calendar' as const, label: 'Date', value: date },
+  { icon: 'clock' as const, label: 'Time', value: time },
+  { icon: 'map-pin' as const, label: location.name, value: location.address },
+];
+---
+
+<Section id={id} labelledBy={headingId} tone="muted">
+  <Container width="wide" class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} />
+      <dl class="border-line-strong bg-surface-raised mt-8 divide-y divide-line border">
+        {
+          facts.map((fact) => (
+            <div class="flex gap-4 p-5">
+              <Icon name={fact.icon} class="text-accent-ink mt-0.5 size-5 shrink-0" />
+              <div>
+                <dt class="text-ink-muted font-mono text-[0.7rem] tracking-[0.14em] uppercase">{fact.label}</dt>
+                <dd class="mt-1 font-semibold">{fact.value}</dd>
+              </div>
+            </div>
+          ))
+        }
+      </dl>
+      {cta && <Button href={cta.href} size="lg" icon="arrow-right" class="mt-8">{cta.label}</Button>}
+      {note && <p class="text-ink-muted mt-4 text-sm">{note}</p>}
+    </div>
+    <div class="lg:col-span-7">
+      <h3 class="text-ink-muted font-mono text-[0.72rem] tracking-[0.14em] uppercase">Agenda</h3>
+      <ol class="border-line-strong mt-4 border-l">
+        {
+          agenda.map((item) => (
+            <li class="relative pb-8 pl-8 last:pb-0">
+              <span class="bg-accent border-surface-muted absolute top-1 -left-[7px] size-3.5 border-2" aria-hidden="true" />
+              <p class="text-accent-ink font-mono text-sm font-semibold tabular-nums">{item.time}</p>
+              <p class="font-display mt-1 text-lg font-bold tracking-tight">{item.title}</p>
+              {item.body && <p class="text-ink-muted mt-1 leading-relaxed">{item.body}</p>}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </Container>
+</Section>

@@ -1,0 +1,129 @@
+---
+/**
+ * Generated mural concepts (pure SVG). They stand in for photography in
+ * this demo and are labelled as illustrative wherever they appear.
+ */
+import type { ArtVariant } from './variants';
+
+interface Props {
+  variant: ArtVariant;
+  label?: string;
+  class?: string;
+}
+const { variant, label, class: className } = Astro.props;
+const labels: Record<ArtVariant, string> = {
+  sunrise: 'Mural concept: a marigold sun rising over layered terracotta, sage and cobalt hills',
+  botanical: 'Mural concept: oversized teal leaves over a sage wall with terracotta and marigold dots',
+  geo: 'Mural concept: bold geometric blocks and quarter circles in cobalt, marigold and terracotta',
+  wave: 'Mural concept: flowing horizontal waves in cobalt, teal, blush and marigold',
+  city: 'Mural concept: a cobalt city skyline at dusk with marigold windows and a large moon',
+  abstract: 'Mural concept: overlapping organic shapes in terracotta, blush, cobalt and sage',
+};
+const a11y = label === '' ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label': label ?? labels[variant] };
+const uid = `art-${variant}-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" class:list={['block h-full w-full', className]} {...a11y}>
+  {
+    variant === 'sunrise' && (
+      <>
+        <defs>
+          <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f3c9b7" />
+            <stop offset="1" stop-color="#fbf6ee" />
+          </linearGradient>
+        </defs>
+        <rect width="400" height="300" fill={`url(#${uid}-sky)`} />
+        <circle cx="200" cy="190" r="92" fill="#f2b33d" />
+        <circle cx="200" cy="190" r="118" fill="none" stroke="#f2b33d" stroke-width="3" stroke-dasharray="2 10" />
+        <path d="M0 200 C 70 160, 140 170, 200 205 S 330 170, 400 190 V300 H0Z" fill="#e0573a" />
+        <path d="M0 235 C 90 205, 170 225, 250 245 S 360 215, 400 225 V300 H0Z" fill="#8aa68d" />
+        <path d="M0 270 C 100 250, 210 262, 290 276 S 370 262, 400 266 V300 H0Z" fill="#2b45c8" />
+      </>
+    )
+  }
+  {
+    variant === 'botanical' && (
+      <>
+        <rect width="400" height="300" fill="#8aa68d" />
+        <circle cx="300" cy="90" r="70" fill="#e0573a" />
+        <circle cx="70" cy="60" r="10" fill="#f2b33d" />
+        <circle cx="96" cy="84" r="6" fill="#f2b33d" />
+        <circle cx="350" cy="250" r="14" fill="#f2b33d" />
+        <g fill="#1f6f6b">
+          <path d="M40 300 C 40 190, 120 120, 210 110 C 200 190, 140 260, 40 300Z" />
+          <path d="M180 300 C 170 220, 230 160, 320 150 C 320 230, 260 280, 180 300Z" />
+          <path d="M-10 170 C 40 140, 100 150, 130 180 C 80 210, 30 205, -10 170Z" />
+        </g>
+        <g stroke="#fbf6ee" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8">
+          <path d="M45 296 C 90 230, 140 170, 205 114" />
+          <path d="M185 296 C 220 240, 260 190, 316 154" />
+          <path d="M-6 170 C 40 168, 90 172, 128 180" />
+        </g>
+      </>
+    )
+  }
+  {
+    variant === 'geo' && (
+      <>
+        <rect width="400" height="300" fill="#fbf6ee" />
+        <rect x="0" y="0" width="160" height="150" fill="#2b45c8" />
+        <path d="M160 0 H280 V120 A120 120 0 0 1 160 0Z" fill="#f2b33d" />
+        <rect x="280" y="0" width="120" height="120" fill="#e0573a" />
+        <circle cx="80" cy="225" r="75" fill="#e0573a" />
+        <path d="M160 150 H300 V300 H160Z" fill="#1e1a17" />
+        <path d="M160 300 A140 140 0 0 1 300 160 V300Z" fill="#f3c9b7" />
+        <path d="M300 120 H400 V300 H300Z" fill="#8aa68d" />
+        <circle cx="350" cy="210" r="30" fill="#fbf6ee" />
+      </>
+    )
+  }
+  {
+    variant === 'wave' && (
+      <>
+        <rect width="400" height="300" fill="#fbf6ee" />
+        <path d="M0 40 C 60 10, 120 70, 200 40 S 340 10, 400 40 V0 H0Z" fill="#f2b33d" />
+        <path d="M0 110 C 70 70, 140 140, 210 100 S 340 70, 400 105 V60 C 340 30, 270 90, 200 60 S 60 30, 0 60Z" fill="#f3c9b7" />
+        <path d="M0 170 C 80 130, 150 200, 220 160 S 340 130, 400 165 V120 C 330 90, 260 150, 200 120 S 70 90, 0 125Z" fill="#1f6f6b" />
+        <path d="M0 235 C 70 195, 150 265, 220 225 S 350 195, 400 230 V180 C 340 150, 270 210, 200 180 S 70 150, 0 185Z" fill="#2b45c8" />
+        <path d="M0 300 V250 C 70 220, 150 280, 220 250 S 350 220, 400 250 V300Z" fill="#e0573a" />
+      </>
+    )
+  }
+  {
+    variant === 'city' && (
+      <>
+        <rect width="400" height="300" fill="#1e1a17" />
+        <circle cx="300" cy="80" r="46" fill="#f3c9b7" />
+        <g fill="#2b45c8">
+          <rect x="10" y="150" width="60" height="150" />
+          <rect x="75" y="110" width="50" height="190" />
+          <rect x="130" y="170" width="70" height="130" />
+          <rect x="205" y="90" width="45" height="210" />
+          <rect x="255" y="140" width="65" height="160" />
+          <rect x="325" y="120" width="65" height="180" />
+        </g>
+        <g fill="#f2b33d">
+          {[0, 1, 2, 3, 4, 5, 6, 7].map((row) =>
+            [22, 44, 88, 108, 146, 176, 216, 234, 270, 298, 338, 368].map((x) =>
+              (x + row * 7) % 3 === 0 ? <rect x={x} y={170 + row * 16} width="8" height="8" /> : null,
+            ),
+          )}
+        </g>
+        <rect x="0" y="286" width="400" height="14" fill="#e0573a" />
+      </>
+    )
+  }
+  {
+    variant === 'abstract' && (
+      <>
+        <rect width="400" height="300" fill="#f4ebdc" />
+        <path d="M-20 120 C 40 20, 180 30, 210 120 C 240 210, 120 280, 20 250 C -40 230, -50 170, -20 120Z" fill="#e0573a" />
+        <path d="M170 40 C 260 -10, 380 30, 390 120 C 400 210, 300 230, 230 190 C 160 150, 110 80, 170 40Z" fill="#2b45c8" />
+        <path d="M200 200 C 260 160, 360 190, 380 250 C 400 310, 260 330, 210 300 C 170 275, 160 225, 200 200Z" fill="#8aa68d" />
+        <circle cx="200" cy="150" r="46" fill="#f3c9b7" style="mix-blend-mode:multiply" />
+        <circle cx="96" cy="84" r="16" fill="#f2b33d" />
+      </>
+    )
+  }
+</svg>

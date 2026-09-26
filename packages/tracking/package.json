@@ -1,0 +1,24 @@
+{
+  "name": "@platform/tracking",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PROTECTED: GTM loader, consent defaults, click-ID capture, lead event. Changes need developer review.",
+  "exports": {
+    "./config": "./src/config.ts",
+    "./env": "./src/env.ts",
+    "./head": "./src/head.ts",
+    "./client": "./src/client.ts",
+    "./*.astro": "./src/*.astro"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "astro": "7.3.5",
+    "vitest": "5.0.2"
+  },
+  "peerDependencies": {
+    "astro": "^7"
+  }
+}

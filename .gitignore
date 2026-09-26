@@ -1,0 +1,15 @@
+node_modules
+dist
+.astro
+.vercel
+.turbo
+.env
+.env.*
+!.env.example
+tests/test-results
+tests/playwright-report
+tests/fixtures/generated
+lychee
+*.log
+.DS_Store
+.claude/settings.local.json

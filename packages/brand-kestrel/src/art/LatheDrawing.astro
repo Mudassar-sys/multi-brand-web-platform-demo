@@ -1,0 +1,137 @@
+---
+/** Technical side-view drawing of a compact CNC lathe. Pure SVG, no images. */
+interface Props {
+  class?: string;
+  label?: string;
+}
+const {
+  class: className,
+  label = 'Line drawing of a compact CNC lathe, side view, with dimension callouts',
+} = Astro.props;
+---
+
+<svg
+  viewBox="0 0 640 430"
+  role="img"
+  aria-label={label}
+  class:list={['h-auto w-full', className]}
+  fill="none"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <!-- centre line -->
+  <line
+    x1="24"
+    y1="205"
+    x2="624"
+    y2="205"
+    class="stroke-line-strong"
+    stroke-width="1"
+    stroke-dasharray="14 5 3 5"></line>
+
+  <!-- cabinet and bed -->
+  <g class="stroke-ink" stroke-width="1.6">
+    <rect x="56" y="304" width="528" height="84" rx="4" class="fill-surface-raised"></rect>
+    <line x1="228" y1="312" x2="228" y2="380"></line>
+    <line x1="412" y1="312" x2="412" y2="380"></line>
+    <rect x="80" y="330" width="120" height="30" rx="3" class="stroke-line-strong"></rect>
+    <rect x="252" y="330" width="136" height="30" rx="3" class="stroke-line-strong"></rect>
+    <rect x="436" y="330" width="124" height="30" rx="3" class="stroke-line-strong"></rect>
+    <path d="M70 388 v14 h40 v-14 M530 388 v14 h40 v-14"></path>
+    <rect x="40" y="268" width="560" height="36" rx="3" class="fill-surface-raised"></rect>
+    <line x1="40" y1="280" x2="600" y2="280" class="stroke-line-strong"></line>
+    <line x1="40" y1="292" x2="600" y2="292" class="stroke-line-strong"></line>
+  </g>
+
+  <!-- headstock, spindle, chuck -->
+  <g class="stroke-ink" stroke-width="1.6">
+    <rect x="60" y="140" width="142" height="128" rx="6" class="fill-surface-raised"></rect>
+    <rect x="78" y="160" width="58" height="40" rx="3" class="stroke-line-strong"></rect>
+    <circle cx="96" cy="230" r="9" class="stroke-line-strong"></circle>
+    <circle cx="124" cy="230" r="9" class="stroke-line-strong"></circle>
+    <circle cx="170" cy="182" r="6" class="fill-accent stroke-ink"></circle>
+    <rect x="202" y="168" width="38" height="74" rx="5" class="fill-surface-raised"></rect>
+    <rect x="240" y="176" width="14" height="16" rx="2" class="fill-surface-raised"></rect>
+    <rect x="240" y="218" width="14" height="16" rx="2" class="fill-surface-raised"></rect>
+  </g>
+
+  <!-- workpiece -->
+  <g class="stroke-ink" stroke-width="1.6">
+    <path d="M254 191 H372 V195 H430 V199 H466 V211 H430 V215 H372 V219 H254 Z" class="fill-accent"></path>
+    <line x1="300" y1="191" x2="300" y2="219" class="stroke-on-accent" stroke-width="0.8"></line>
+    <line x1="330" y1="191" x2="330" y2="219" class="stroke-on-accent" stroke-width="0.8"></line>
+  </g>
+
+  <!-- carriage, tool post, insert -->
+  <g class="stroke-ink" stroke-width="1.6">
+    <rect x="318" y="246" width="112" height="22" rx="3" class="fill-surface-raised"></rect>
+    <rect x="340" y="232" width="56" height="14" rx="2" class="fill-surface-raised"></rect>
+    <rect x="352" y="222" width="26" height="10" rx="1.5" class="fill-surface-raised"></rect>
+    <path d="M378 227 L398 227 L392 220 Z" class="fill-ink"></path>
+  </g>
+
+  <!-- tailstock -->
+  <g class="stroke-ink" stroke-width="1.6">
+    <rect x="506" y="170" width="78" height="98" rx="6" class="fill-surface-raised"></rect>
+    <rect x="478" y="198" width="28" height="14" rx="2" class="fill-surface-raised"></rect>
+    <path d="M478 199 L466 205 L478 211 Z" class="fill-ink"></path>
+    <circle cx="560" cy="150" r="14" class="fill-surface-raised"></circle>
+    <line x1="560" y1="164" x2="560" y2="170"></line>
+  </g>
+
+  <!-- dimension: between centres -->
+  <g class="stroke-line-strong" stroke-width="1">
+    <line x1="254" y1="120" x2="254" y2="186"></line>
+    <line x1="466" y1="120" x2="466" y2="198"></line>
+    <line x1="258" y1="128" x2="462" y2="128"></line>
+    <path d="M258 128 l9 -4 v8 Z M462 128 l-9 -4 v8 Z" class="fill-line-strong"></path>
+  </g>
+  <text
+    x="360"
+    y="116"
+    text-anchor="middle"
+    class="fill-ink font-mono"
+    font-size="12"
+    letter-spacing="1.4">400 MM BETWEEN CENTRES</text
+  >
+
+  <!-- dimension: swing -->
+  <g class="stroke-line-strong" stroke-width="1">
+    <line x1="592" y1="120" x2="612" y2="120"></line>
+    <line x1="592" y1="290" x2="612" y2="290"></line>
+    <line x1="604" y1="124" x2="604" y2="286"></line>
+    <path d="M604 124 l-4 9 h8 Z M604 286 l-4 -9 h8 Z" class="fill-line-strong"></path>
+  </g>
+  <text
+    x="626"
+    y="205"
+    text-anchor="middle"
+    transform="rotate(90 626 205)"
+    class="fill-ink font-mono"
+    font-size="12"
+    letter-spacing="1.4">SWING 250 MM</text
+  >
+
+  <!-- callouts -->
+  <g class="stroke-ink" stroke-width="1">
+    <line x1="221" y1="168" x2="190" y2="70"></line>
+    <line x1="388" y1="222" x2="420" y2="70"></line>
+    <line x1="545" y1="170" x2="540" y2="70"></line>
+  </g>
+  <g class="font-mono" font-size="11" letter-spacing="1.2">
+    <circle cx="190" cy="58" r="12" class="fill-accent stroke-ink" stroke-width="1.2"></circle>
+    <text x="190" y="62" text-anchor="middle" class="fill-on-accent" font-weight="700">1</text>
+    <text x="208" y="50" class="fill-ink">SPINDLE</text>
+    <text x="208" y="64" class="fill-ink-muted">A2-4 NOSE</text>
+
+    <circle cx="420" cy="58" r="12" class="fill-accent stroke-ink" stroke-width="1.2"></circle>
+    <text x="420" y="62" text-anchor="middle" class="fill-on-accent" font-weight="700">2</text>
+    <text x="438" y="50" class="fill-ink">TOOLING</text>
+    <text x="438" y="64" class="fill-ink-muted">QCTP</text>
+
+    <circle cx="540" cy="30" r="12" class="fill-accent stroke-ink" stroke-width="1.2"></circle>
+    <text x="540" y="34" text-anchor="middle" class="fill-on-accent" font-weight="700">3</text>
+    <text x="558" y="22" class="fill-ink">TAILSTOCK</text>
+    <text x="558" y="36" class="fill-ink-muted">MT3 QUILL</text>
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { specTable } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof specTable.schema> & { index?: number };
+const { id, eyebrow, heading, intro, models, rows, footnote, index = 0 } = Astro.props;
+const headingId = `${id ?? `specs-${index}`}-title`;
+---
+
+<Section id={id} labelledBy={headingId} tone="muted">
+  <Container width="wide">
+    <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} />
+    <div class="border-line-strong bg-surface-raised mt-10 overflow-x-auto border" tabindex="0" role="region" aria-labelledby={headingId}>
+      <table class="w-full min-w-[34rem] border-collapse text-left">
+        <caption class="sr-only">{heading}</caption>
+        <thead>
+          <tr class="bg-inverse text-on-inverse">
+            <th scope="col" class="px-5 py-4 font-mono text-[0.72rem] font-medium tracking-[0.14em] uppercase">
+              Specification
+            </th>
+            {
+              models.map((model) => (
+                <th scope="col" class="font-display px-5 py-4 text-lg font-bold tracking-tight">
+                  {model}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr class="border-line border-t even:bg-surface/60">
+                <th scope="row" class="text-ink-muted px-5 py-3.5 text-sm font-medium">
+                  {row.label}
+                </th>
+                {row.values.map((value) => (
+                  <td class="px-5 py-3.5 font-mono text-sm tabular-nums">{value}</td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    {footnote && <p class="text-ink-muted mt-4 text-sm">{footnote}</p>}
+  </Container>
+</Section>

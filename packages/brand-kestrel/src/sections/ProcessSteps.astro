@@ -1,0 +1,41 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { processSteps } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof processSteps.schema> & { index?: number };
+const { id, eyebrow, heading, intro, steps, index = 0 } = Astro.props;
+const headingId = `${id ?? `steps-${index}`}-title`;
+---
+
+<Section id={id} labelledBy={headingId}>
+  <Container width="wide">
+    <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} />
+    <ol class="mt-12 grid gap-8 md:grid-cols-2 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-none lg:gap-6">
+      {
+        steps.map((step, i) => (
+          <li class="relative">
+            <div class="flex items-center gap-3" aria-hidden="true">
+              <span class="bg-inverse text-on-inverse inline-flex size-10 items-center justify-center font-mono text-sm font-semibold">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="bg-line-strong h-px flex-1" />
+            </div>
+            {step.duration && (
+              <p class="text-accent-ink mt-5 font-mono text-[0.7rem] tracking-[0.14em] uppercase">
+                {step.duration}
+              </p>
+            )}
+            <h3 class:list={['font-display text-lg font-bold tracking-tight', step.duration ? 'mt-1' : 'mt-5']}>
+              <span class="sr-only">Step {i + 1}: </span>
+              {step.title}
+            </h3>
+            <p class="text-ink-muted mt-2 text-[0.95rem] leading-relaxed">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Container>
+</Section>

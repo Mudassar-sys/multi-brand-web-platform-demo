@@ -1,0 +1,92 @@
+---
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Box,
+  Building2,
+  Calendar,
+  Check,
+  Clock,
+  Coffee,
+  Cog,
+  Cpu,
+  Droplets,
+  FileText,
+  Gauge,
+  GraduationCap,
+  Hammer,
+  House,
+  Image,
+  Layers,
+  Leaf,
+  Mail,
+  MapPin,
+  PaintRoller,
+  Paintbrush,
+  Palette,
+  Phone,
+  Ruler,
+  ScanLine,
+  ShieldCheck,
+  Sparkles,
+  Store,
+  Sun,
+  Timer,
+  Truck,
+  Upload,
+  Wrench,
+  X,
+  Zap,
+} from '@lucide/astro';
+import type { IconName } from './icons';
+
+interface Props {
+  name: IconName;
+  class?: string;
+}
+const { name, class: className = 'size-5' } = Astro.props;
+
+const map = {
+  'arrow-right': ArrowRight,
+  'arrow-up-right': ArrowUpRight,
+  check: Check,
+  x: X,
+  calendar: Calendar,
+  clock: Clock,
+  'map-pin': MapPin,
+  phone: Phone,
+  mail: Mail,
+  ruler: Ruler,
+  gauge: Gauge,
+  wrench: Wrench,
+  cpu: Cpu,
+  cog: Cog,
+  truck: Truck,
+  'shield-check': ShieldCheck,
+  layers: Layers,
+  sparkles: Sparkles,
+  palette: Palette,
+  'paint-roller': PaintRoller,
+  paintbrush: Paintbrush,
+  image: Image,
+  sun: Sun,
+  droplets: Droplets,
+  building: Building2,
+  store: Store,
+  coffee: Coffee,
+  'graduation-cap': GraduationCap,
+  house: House,
+  zap: Zap,
+  box: Box,
+  'scan-line': ScanLine,
+  'file-text': FileText,
+  upload: Upload,
+  timer: Timer,
+  hammer: Hammer,
+  leaf: Leaf,
+} satisfies Record<IconName, unknown>;
+
+const Component = map[name];
+---
+
+<Component class={className} aria-hidden="true" stroke-width={1.75} />

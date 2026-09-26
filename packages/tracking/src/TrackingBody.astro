@@ -1,0 +1,26 @@
+---
+/** Render immediately after the opening <body> tag. */
+import type { TrackingConfig } from './config';
+import { getGtmId } from './env';
+import { buildGtmNoscriptSrc } from './head';
+
+interface Props {
+  config: TrackingConfig;
+}
+const { config } = Astro.props;
+const gtmId = getGtmId();
+---
+
+{
+  gtmId && (
+    <noscript>
+      <iframe
+        src={buildGtmNoscriptSrc(gtmId, config.gtmHost)}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="Google Tag Manager"
+      />
+    </noscript>
+  )
+}

@@ -1,0 +1,51 @@
+---
+/**
+ * Minimal, safe rich text. Page data holds plain paragraphs; `**bold**`
+ * and `[label](/path)` are the only inline formats. No raw HTML is ever
+ * rendered from content.
+ */
+interface Props {
+  paragraphs: string[];
+  class?: string;
+}
+const { paragraphs, class: className } = Astro.props;
+
+type Token = { kind: 'text' | 'strong'; value: string } | { kind: 'link'; value: string; href: string };
+
+function tokenize(input: string): Token[] {
+  const tokens: Token[] = [];
+  const pattern = /\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)\s]+)\)/g;
+  let last = 0;
+  for (const match of input.matchAll(pattern)) {
+    if (match.index > last) tokens.push({ kind: 'text', value: input.slice(last, match.index) });
+    if (match[1]) tokens.push({ kind: 'strong', value: match[1] });
+    else tokens.push({ kind: 'link', value: match[2], href: match[3] });
+    last = match.index + match[0].length;
+  }
+  if (last < input.length) tokens.push({ kind: 'text', value: input.slice(last) });
+  return tokens;
+}
+---
+
+<div class:list={['space-y-5 text-pretty', className]}>
+  {
+    paragraphs.map((paragraph) => (
+      <p>
+        {tokenize(paragraph).map((token) =>
+          token.kind === 'strong' ? (
+            <strong class="font-semibold text-ink">{token.value}</strong>
+          ) : token.kind === 'link' ? (
+            <a
+              href={token.href}
+              class="font-medium text-accent-ink underline decoration-1 underline-offset-4 hover:decoration-2"
+            >
+              {token.value}
+            </a>
+          ) : (
+            token.value
+          ),
+        )}
+      </p>
+    ))
+  }
+</div>

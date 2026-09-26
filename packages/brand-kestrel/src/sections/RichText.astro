@@ -1,0 +1,35 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import Prose from '@platform/ui-core/Prose.astro';
+import type { richText } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof richText.schema> & { index?: number };
+const { id, eyebrow, heading, paragraphs, aside, index = 0 } = Astro.props;
+const headingId = `${id ?? `text-${index}`}-title`;
+---
+
+<Section id={id} labelledBy={headingId}>
+  <Container width="wide" class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-8">
+      <SectionIntro eyebrow={eyebrow} heading={heading} headingId={headingId} />
+      <Prose paragraphs={paragraphs} class="text-ink-muted mt-8 text-lg leading-relaxed" />
+    </div>
+    {
+      aside && (
+        <aside class="lg:col-span-4" aria-label={aside.title}>
+          <div class="border-line-strong bg-surface-raised sticky top-24 border p-6">
+            <p class="text-accent-ink font-mono text-[0.72rem] font-semibold tracking-[0.14em] uppercase">{aside.title}</p>
+            <ul class="divide-line mt-4 divide-y" role="list">
+              {aside.items.map((item) => (
+                <li class="py-3 text-[0.95rem]">{item}</li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      )
+    }
+  </Container>
+</Section>

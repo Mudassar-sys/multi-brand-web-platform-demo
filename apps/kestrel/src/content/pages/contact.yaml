@@ -1,0 +1,31 @@
+title: Book a showroom demo
+description: Book a one-hour Kestrel showroom demo. Send a drawing ahead of time and an applications engineer will cut your part on a compact CNC lathe.
+sections:
+  - type: pageHeader
+    eyebrow: Contact
+    heading: Talk to an applications engineer
+    intro: Tell us what you turn today. We reply within one business day with a suggested machine, tooling package and demo slot.
+
+  - type: leadForm
+    id: book
+    eyebrow: Showroom demo
+    heading: Book your one-hour slot
+    intro: Demo days run every weekday. Weekend slots are available on open house days.
+    formId: contact-demo
+    fields: [lastName, phone, company, interest, message]
+    interestLabel: Which machine are you considering?
+    interestOptions: [KL-160, KL-250, Not sure yet]
+    submitLabel: Request a slot
+    successMessage: Thanks. An applications engineer will reply within one business day to confirm your slot.
+    points:
+      - Bring a drawing and material, leave with a finished sample
+      - Your operator is welcome to run the machine
+      - No obligation and no sales pressure
+
+  - type: faq
+    heading: Demo day questions
+    items:
+      - question: How long is a showroom demo?
+        answer: One hour, including a walk-through of both machines and a cut of your own part if you send the drawing ahead.
+      - question: Can I bring my operator?
+        answer: Yes, and we recommend it. Operators often spot the setup details that matter most.

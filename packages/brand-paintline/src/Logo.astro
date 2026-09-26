@@ -1,0 +1,17 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={['inline-flex items-center gap-2.5', className]}>
+  <svg viewBox="0 0 36 36" class="size-9 shrink-0" aria-hidden="true">
+    <circle cx="18" cy="18" r="18" fill="#e0573a"></circle>
+    <path d="M4 22 C 10 14, 18 26, 26 16 S 34 14, 36 16 V36 H0 V26 Z" fill="#2b45c8"></path>
+    <circle cx="24" cy="11" r="5" fill="#f2b33d"></circle>
+  </svg>
+  <span class="font-display text-[1.45rem] leading-none tracking-tight">
+    Paintline<span class="text-accent-ink italic"> Murals</span>
+  </span>
+</span>

@@ -1,0 +1,31 @@
+{
+  "name": "@platform/forms",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PROTECTED: lead endpoint, provider adapters, spam guards, Blob uploads. Changes need developer review.",
+  "exports": {
+    "./config": "./src/config.ts",
+    "./schema": "./src/schema.ts",
+    "./handler": "./src/handler.ts",
+    "./upload": "./src/upload.ts",
+    "./client": "./src/client.ts",
+    "./limits": "./src/limits.ts",
+    "./receipt": "./src/receipt.ts",
+    "./*.astro": "./src/*.astro"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@platform/tracking": "workspace:*",
+    "@vercel/blob": "2.8.0"
+  },
+  "devDependencies": {
+    "astro": "7.3.5",
+    "vitest": "5.0.2"
+  },
+  "peerDependencies": {
+    "astro": "^7"
+  }
+}

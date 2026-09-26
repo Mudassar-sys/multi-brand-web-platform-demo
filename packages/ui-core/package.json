@@ -1,0 +1,27 @@
+{
+  "name": "@platform/ui-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./sections": "./src/sections.ts",
+    "./brand": "./src/brand.ts",
+    "./primitives/icons": "./src/primitives/icons.ts",
+    "./*.astro": "./src/*.astro"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lucide/astro": "1.48.0",
+    "@platform/forms": "workspace:*",
+    "@platform/tracking": "workspace:*"
+  },
+  "devDependencies": {
+    "astro": "7.3.5",
+    "vitest": "5.0.2"
+  },
+  "peerDependencies": {
+    "astro": "^7"
+  }
+}

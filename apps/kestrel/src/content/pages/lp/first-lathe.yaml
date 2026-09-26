@@ -1,0 +1,51 @@
+title: Your first CNC lathe, without the guesswork
+description: A guided path to your first compact CNC lathe. Send a drawing, see it cut in the showroom and get a fixed quote with rigging and training included.
+kind: landing
+noindex: true
+sections:
+  - type: hero
+    eyebrow: For shops moving to CNC
+    heading: Your first CNC lathe, without the guesswork
+    subheading: Send us one drawing. We cut it in the showroom on a Kestrel compact lathe, then quote the machine, tooling, rigging and training as one fixed price.
+    primaryCta: { label: Send a drawing, href: '#start' }
+    highlights:
+      - { label: Delivered in, value: 3 weeks }
+      - { label: Training, value: 2 days }
+    visual: chuck
+
+  - type: featureGrid
+    heading: What the fixed quote includes
+    columns: 2
+    features:
+      - icon: box
+        title: Machine and tooling
+        body: The lathe, a starter tooling package matched to your parts, and a chuck jaw set.
+      - icon: truck
+        title: Freight and rigging
+        body: Delivery to your door, placement, levelling and anchoring by our own crew.
+      - icon: graduation-cap
+        title: Operator training
+        body: Two days on site, ending with your operator running a production part.
+      - icon: wrench
+        title: First-year support
+        body: One phone number for parts, programming questions and service visits.
+
+  - type: leadForm
+    id: start
+    heading: Send a drawing to start
+    intro: Attachments are handled after we reply. For now, tell us about the part.
+    formId: lp-first-lathe
+    fields: [company, phone, message]
+    submitLabel: Start my quote
+    successMessage: Thanks. We will reply within one business day with next steps for your drawing.
+    points:
+      - A fixed price with rigging and training included
+      - Your own part cut before you decide
+
+  - type: faq
+    heading: Common questions
+    items:
+      - question: Do I need CNC experience?
+        answer: No. Training is written for operators coming from manual lathes and ends with a production part.
+      - question: What if the machine is not right for my part?
+        answer: We will tell you after the part review, before any demo is booked.

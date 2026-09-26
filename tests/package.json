@@ -1,0 +1,16 @@
+{
+  "name": "@platform/tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:kestrel": "playwright test --project=kestrel",
+    "test:paintline": "playwright test --project=paintline"
+  },
+  "devDependencies": {
+    "@platform/config": "workspace:*",
+    "@playwright/test": "1.63.0",
+    "yaml": "2.9.1"
+  }
+}

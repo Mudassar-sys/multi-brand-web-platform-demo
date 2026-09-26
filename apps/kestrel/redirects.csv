@@ -1,0 +1,4 @@
+Old path,Redirect to path
+/products/kl%-250,/machines
+/request%-a%-quote,/contact
+/en/(.*),/%1

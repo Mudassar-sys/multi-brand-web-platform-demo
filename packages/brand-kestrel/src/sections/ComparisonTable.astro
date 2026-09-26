@@ -1,0 +1,66 @@
+---
+import type { z } from 'astro/zod';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Icon from '@platform/ui-core/primitives/Icon.astro';
+import Section from '@platform/ui-core/primitives/Section.astro';
+import type { comparisonTable } from '../schemas';
+import SectionIntro from './SectionIntro.astro';
+
+type Props = z.infer<typeof comparisonTable.schema> & { index?: number };
+const { id, eyebrow, heading, intro, columns, rows, index = 0 } = Astro.props;
+const headingId = `${id ?? `compare-${index}`}-title`;
+---
+
+<Section id={id} labelledBy={headingId} tone="inverse">
+  <Container width="wide">
+    <SectionIntro eyebrow={eyebrow} heading={heading} intro={intro} headingId={headingId} />
+    <div class="mt-10 overflow-x-auto" tabindex="0" role="region" aria-labelledby={headingId}>
+      <table class="w-full min-w-[30rem] border-collapse text-left">
+        <caption class="sr-only">{heading}</caption>
+        <thead>
+          <tr class="border-line-strong border-b">
+            <td class="py-4"></td>
+            <th scope="col" class="py-4 pr-4">
+              <span class="bg-accent text-on-accent inline-block px-3 py-1.5 font-mono text-[0.72rem] font-semibold tracking-[0.12em] uppercase">
+                {columns.ours}
+              </span>
+            </th>
+            <th scope="col" class="text-ink-muted py-4 font-mono text-[0.72rem] font-medium tracking-[0.12em] uppercase">
+              {columns.other}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr class="border-line border-b">
+                <th scope="row" class="py-4 pr-6 font-medium">
+                  {row.label}
+                </th>
+                {[row.ours, row.other].map((cell, i) => (
+                  <td class:list={['py-4 pr-4', i === 1 && 'text-ink-muted']}>
+                    {typeof cell === 'boolean' ? (
+                      cell ? (
+                        <span class="inline-flex items-center gap-2">
+                          <Icon name="check" class="text-accent size-5" />
+                          <span class="sr-only">Yes</span>
+                        </span>
+                      ) : (
+                        <span class="inline-flex items-center gap-2">
+                          <Icon name="x" class="text-ink-muted size-5" />
+                          <span class="sr-only">No</span>
+                        </span>
+                      )
+                    ) : (
+                      <span class="font-mono text-sm">{cell}</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Container>
+</Section>

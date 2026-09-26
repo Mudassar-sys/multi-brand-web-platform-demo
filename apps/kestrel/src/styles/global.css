@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+@import '../../../../packages/brand-kestrel/theme.css';
+
+/*
+ * Tailwind skips node_modules and git-ignored paths when it scans for
+ * classes, and workspace packages are linked through node_modules. Each
+ * shared package that renders markup is registered here explicitly.
+ */
+@source '../../../../packages/ui-core/src';
+@source '../../../../packages/brand-kestrel/src';
+@source '../../../../packages/forms/src';
+@source '../../../../packages/tracking/src';

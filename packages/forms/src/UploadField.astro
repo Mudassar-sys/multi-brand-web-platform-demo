@@ -1,0 +1,40 @@
+---
+/**
+ * Optional file field for lead forms. Files go straight from the browser to
+ * Vercel Blob (client upload), so the 4.5 MB Function body limit does not
+ * apply. Limits live in limits.ts and are enforced again by the token.
+ */
+import { UPLOAD_ACCEPT, UPLOAD_MAX_BYTES } from './limits';
+
+interface Props {
+  formId: string;
+  label: string;
+  hint?: string;
+  enabled: boolean;
+  class?: string;
+  inputClass?: string;
+}
+const { formId, label, hint, enabled, class: className, inputClass } = Astro.props;
+const id = `${formId}-attachment`;
+---
+
+<div class:list={['flex flex-col gap-1.5', className]} data-upload-field>
+  <label for={id} class="text-sm font-semibold">
+    {label} <span class="text-ink-muted font-normal">(optional)</span>
+  </label>
+  <input
+    id={id}
+    type="file"
+    name="attachment"
+    accept={UPLOAD_ACCEPT}
+    data-max-bytes={UPLOAD_MAX_BYTES}
+    disabled={!enabled}
+    aria-describedby={`${id}-hint`}
+    class={inputClass}
+  />
+  <p id={`${id}-hint`} class="text-ink-muted text-xs">
+    {enabled ? (hint ?? 'PDF, PNG or JPEG, up to 10 MB.') : 'File uploads are switched off on this deployment.'}
+  </p>
+  <progress data-upload-progress hidden max="100" value="0" class="h-1.5 w-full"></progress>
+  <p data-error-for="attachment" class="text-danger hidden text-sm font-medium"></p>
+</div>

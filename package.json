@@ -1,0 +1,34 @@
+{
+  "name": "multi-brand-web-platform-demo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "check": "turbo run check",
+    "test": "turbo run test",
+    "verify": "node scripts/verify.mjs",
+    "sections": "tsx scripts/sections.ts",
+    "sections:check": "tsx scripts/sections.ts --check",
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "dev:kestrel": "pnpm --filter @platform/kestrel dev",
+    "dev:paintline": "pnpm --filter @platform/paintline dev",
+    "test:e2e": "pnpm --filter @platform/tests test"
+  },
+  "devDependencies": {
+    "prettier": "3.9.9",
+    "prettier-plugin-astro": "1.1.0",
+    "tsx": "4.23.15",
+    "turbo": "2.11.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
+}
