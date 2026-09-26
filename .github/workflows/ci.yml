@@ -59,8 +59,18 @@ jobs:
       - name: Section catalogs (SECTIONS.md) are up to date
         run: pnpm sections:check
 
-      - name: Build, astro check and unit tests (affected packages)
-        run: pnpm exec turbo run build check test --affected
+      # Same affected set as Vercel: each affected brand plus every package it
+      # depends on (the trailing ... in the filter).
+      - name: Build, astro check and unit tests (affected brands and their packages)
+        if: steps.affected.outputs.affected != ''
+        run: |
+          filters=""
+          for brand in ${{ steps.affected.outputs.affected }}; do filters="$filters --filter=@platform/$brand..."; done
+          pnpm exec turbo run build check test $filters
+
+      - name: Unit tests (packages changed without affecting a brand)
+        if: steps.affected.outputs.affected == ''
+        run: pnpm exec turbo run test --affected
         env:
           TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha }}
 
