@@ -113,10 +113,56 @@ Not conversions (seen on previews, not matched by the check):
  20491ms [submit] GET www.googleadservices.com/pagead/conversion/16832482446/  <carries 16832482446 ADS CONVERSION>
  20963ms [submit] POST googleads.g.doubleclick.net/pagead/viewthroughconversion/16832482446/  <carries 16832482446 ADS CONVERSION>
  22476ms [submit] GET www.google.com/pagead/1p-conversion/16832482446/  <carries 16832482446 ADS CONVERSION>
- 22477ms [submit] GET www.google.com.pk/pagead/1p-conversion/16832482446/  <carries 16832482446 ADS CONVERSION>
- 22478ms [submit] GET www.google.com.pk/pagead/1p-conversion/16832482446/  <carries 16832482446 ADS CONVERSION>  FAILED net::ERR_ABORTED
+ 22477ms [submit] GET www.google.<local TLD>/pagead/1p-conversion/16832482446/  <carries 16832482446 ADS CONVERSION>
+ 22478ms [submit] GET www.google.<local TLD>/pagead/1p-conversion/16832482446/  <carries 16832482446 ADS CONVERSION>  FAILED net::ERR_ABORTED
  24762ms [submit] POST www.google-analytics.com/g/collect  <carries G-RJ492TFLKD GA4 hit>
 
   The Ads tag loaded its destination (gtag/destination for AW-16832482446) and sent the
   conversion to /pagead/conversion/, /pagead/viewthroughconversion/ and /pagead/1p-conversion/,
   all carrying 16832482446. Every one of them is matched by the preview check.
+
+== 4. Production after merging PR #9 (Kestrel, main at ea6df4f): Ads conversion IS sent
+  Production Deployment Checks passed first (runs 36244167517 Kestrel, 36244145860 Paintline).
+
+# Kestrel production (main at ea6df4f) https://kestrel-demo-pi.vercel.app  (2026-09-26T13:10:23.228Z)
+# dataLayer[0]: {"site_env":"production","brand":"kestrel"}
+# dataLayer events: gtag:consent:default | gtag:consent:default | gtag:set:url_passthrough | gtag:set:ads_data_redaction | gtag:consent:update | gtm.js | gtm.dom | gtm.load | gtm.formInteract | gtm.formInteract | gtm.formSubmit | generate_lead
+# receipt visible: true
+   987ms [load] GET www.googletagmanager.com/gtm.js
+  1970ms [load] GET www.googletagmanager.com/gtag/js  <carries G-RJ492TFLKD>
+  2484ms [load] POST pagead2.googlesyndication.com/ccm/collect  event=page_view  consent=G101
+  2917ms [load] POST pagead2.googlesyndication.com/ccm/collect  event=page_view  consent=G101  FAILED net::ERR_ABORTED
+  3124ms [load] POST www.google-analytics.com/g/collect  event=page_view  consent=G101  <carries G-RJ492TFLKD GA4 hit>
+  3471ms [load] POST www.google-analytics.com/g/collect  event=page_view  consent=G101  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+  5198ms [accept] POST www.google.com/ccm/collect  event=consent_update  consent=G111
+  5198ms [accept] POST ad.doubleclick.net/ccm/s/collect
+  5576ms [accept] POST ad.doubleclick.net/ccm/s/collect  FAILED net::ERR_ABORTED
+  5589ms [accept] POST www.google.com/ccm/collect  event=consent_update  consent=G111  FAILED net::ERR_ABORTED
+  7876ms [contact] GET www.googletagmanager.com/gtm.js
+  7910ms [contact] GET www.googletagmanager.com/gtag/js  <carries G-RJ492TFLKD>
+  7911ms [contact] POST www.google.com/ccm/collect  event=page_view  consent=G111
+  8071ms [contact] POST www.google.com/ccm/collect  event=page_view  consent=G111  FAILED net::ERR_ABORTED
+  8360ms [contact] POST www.google-analytics.com/g/collect  event=page_view  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+  8508ms [contact] POST www.google-analytics.com/g/collect  event=page_view  consent=G111  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+ 12274ms [submit] GET www.googletagmanager.com/gtag/destination  <carries 16832482446>
+ 12276ms [submit] POST www.google-analytics.com/g/collect  event=form_start  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+ 12422ms [submit] POST www.google-analytics.com/g/collect  event=form_start  consent=G111  <carries G-RJ492TFLKD GA4 hit>  FAILED net::ERR_ABORTED
+ 12904ms [submit] GET www.googleadservices.com/pagead/conversion/16832482446/  event=conversion  consent=G111  <carries 16832482446 ADS CONVERSION>
+ 13382ms [submit] POST googleads.g.doubleclick.net/pagead/viewthroughconversion/16832482446/  event=conversion  consent=G111  <carries 16832482446 ADS CONVERSION>
+ 14491ms [submit] GET www.google.com/pagead/1p-conversion/16832482446/  event=conversion  consent=G111  <carries 16832482446 ADS CONVERSION>
+ 14494ms [submit] GET www.google.<local TLD>/pagead/1p-conversion/16832482446/  event=conversion  consent=G111  <carries 16832482446 ADS CONVERSION>
+ 14494ms [submit] GET www.google.<local TLD>/pagead/1p-conversion/16832482446/  event=conversion  consent=G111  <carries 16832482446 ADS CONVERSION>  FAILED net::ERR_ABORTED
+ 17280ms [submit] POST www.google-analytics.com/g/collect  event=generate_lead  consent=G111  <carries G-RJ492TFLKD GA4 hit>
+
+  Same flow in the real Chrome browser (screenshot in proof/13b), from the extension network
+  reader, host/path only:
+    www.googletagmanager.com/gtag/destination                       id AW-16832482446   status 200
+    www.googleadservices.com/pagead/conversion/16832482446/          event conversion, label demoLeadTest, consent G111   status 200
+    googleads.g.doubleclick.net/pagead/viewthroughconversion/16832482446/   event conversion   status 503 in this browser
+    www.google.com/pagead/1p-conversion/16832482446/                 event conversion   pending when read
+    www.google.<local TLD>/pagead/1p-conversion/16832482446/          event conversion   pending when read
+
+Result on production: generate_lead carried site_env production, the "Block - not production"
+exception did not apply, and the Google Ads conversion for 16832482446 was sent (tagged ADS
+CONVERSION above). The placeholder label demoLeadTest has no conversion action behind it, so
+Google Ads records nothing. The form was in dry-run mode, so no provider was called.

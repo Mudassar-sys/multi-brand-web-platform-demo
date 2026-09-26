@@ -120,7 +120,7 @@ for every `site_env` other than `production`.
 | --- | --- | --- |
 | `site_env` | `preview` | `production` |
 | Forms | TEST list/group, tag `preview-test` | LIVE list/group |
-| Google Ads conversion | Blocked in GTM by the exception trigger, and asserted by Playwright after a test lead (zero Ads conversion requests, `proof/13a`) | Fires on `generate_lead` (container `GTM-NGVNJ7BB` is connected; the demo tag has a placeholder label, so Google Ads records nothing) |
+| Google Ads conversion | Blocked in GTM by the exception trigger, and asserted by Playwright after a test lead (zero Ads conversion requests, `proof/13a`) | Fires on `generate_lead`, proven on production (`proof/13b`). The demo tag has a placeholder label, so Google Ads records nothing |
 | Visible badge | "Preview build" | none |
 | Checks | `preview-checks/<brand>` commit status | `production-checks` via Vercel Deployment Checks |
 | Canonical URLs | point at the production domain | production domain |

@@ -12,7 +12,7 @@ Both brands are fictional and marked "Demo brand" in their footers.
 | Kestrel Machine Co. (live) | https://kestrel-demo-pi.vercel.app |
 | Paintline Murals (live) | https://paintline-demo.vercel.app |
 | Sample landing page PR made by `/new-landing-page` | [PR 5](../../pull/5) (live page: https://kestrel-demo-pi.vercel.app/lp/open-house-demo-day) |
-| Tracking proof (previews) | [proof/13a-preview-gtm-loaded-ads-blocked.jpg](./proof/13a-preview-gtm-loaded-ads-blocked.jpg), [proof/13-tracking-network.txt](./proof/13-tracking-network.txt) |
+| Tracking proof | Previews, Ads blocked: [proof/13a](./proof/13a-preview-gtm-loaded-ads-blocked.jpg). Production, Ads fires: [proof/13b](./proof/13b-production-ads-conversion-fires.jpg). Requests: [proof/13-tracking-network.txt](./proof/13-tracking-network.txt) |
 | Strict GTM and GA4 check | [proof/15-strict-tracking-check.txt](./proof/15-strict-tracking-check.txt) |
 | Proof screenshots | [proof/](./proof) |
 | Owner guide | [docs/OWNER-RUNBOOK.md](./docs/OWNER-RUNBOOK.md) |
@@ -53,8 +53,9 @@ tests/                               Playwright: tracking, forms, uploads, redir
 GTM and GA4 are connected on both brands (container `GTM-NGVNJ7BB`, GA4 `G-RJ492TFLKD`,
 importable as [docs/gtm-container.json](./docs/gtm-container.json)). On previews the Google Ads
 conversion tag is blocked: after a successful test lead, zero Google Ads conversion requests are
-sent ([proof](./proof/13a-preview-gtm-loaded-ads-blocked.jpg),
-[network log](./proof/13-tracking-network.txt)). The demo Ads tag uses a placeholder conversion
+sent ([proof](./proof/13a-preview-gtm-loaded-ads-blocked.jpg)). On production the same lead
+sends the Google Ads conversion ([proof](./proof/13b-production-ads-conversion-fires.jpg);
+both in the [network log](./proof/13-tracking-network.txt)). The demo Ads tag uses a placeholder conversion
 label with no conversion action behind it, so nothing is recorded in Google Ads. What this proves
 is the firing rule.
 
