@@ -1,0 +1,93 @@
+name: preview-checks
+
+# Runs after Vercel reports a finished deployment for a commit. Each brand is
+# its own Vercel project, so one push can produce one event per brand. The
+# result is written as a commit status with a per-brand context
+# (preview-checks/<brand>), so one brand's run can never overwrite another's.
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+  statuses: write
+
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+
+jobs:
+  run:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DEPLOY_ENV: ${{ github.event.deployment.environment }}
+      DEPLOY_URL: ${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url }}
+      SHA: ${{ github.event.deployment.sha }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Work out the brand and environment
+        id: meta
+        run: |
+          env_name="$(echo "$DEPLOY_ENV" | tr '[:upper:]' '[:lower:]')"
+          case "$env_name" in
+            *kestrel*) brand=kestrel ;;
+            *paintline*) brand=paintline ;;
+            *) brand="" ;;
+          esac
+          case "$env_name" in
+            production*) kind=production; prefix=production-checks ;;
+            *) kind=preview; prefix=preview-checks ;;
+          esac
+          echo "brand=$brand" >> "$GITHUB_OUTPUT"
+          echo "kind=$kind" >> "$GITHUB_OUTPUT"
+          echo "context=$prefix/$brand" >> "$GITHUB_OUTPUT"
+          echo "Deployment '$DEPLOY_ENV' at $DEPLOY_URL -> brand '$brand', $kind"
+
+      - name: Status pending
+        if: steps.meta.outputs.brand != ''
+        run: |
+          gh api "repos/${{ github.repository }}/statuses/$SHA" -f state=pending \
+            -f context="${{ steps.meta.outputs.context }}" -f target_url="$RUN_URL" \
+            -f description="Running Playwright against the ${{ steps.meta.outputs.kind }} deployment"
+
+      - uses: actions/checkout@v7
+        if: steps.meta.outputs.brand != ''
+        with:
+          ref: ${{ github.event.deployment.sha }}
+
+      - uses: pnpm/action-setup@v6
+        if: steps.meta.outputs.brand != ''
+
+      - uses: actions/setup-node@v7
+        if: steps.meta.outputs.brand != ''
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        if: steps.meta.outputs.brand != ''
+        run: pnpm install --frozen-lockfile && pnpm --filter @platform/tests exec playwright install --with-deps chromium
+
+      - name: Playwright (${{ steps.meta.outputs.brand }})
+        id: e2e
+        if: steps.meta.outputs.brand != ''
+        env:
+          BASE_URL: ${{ env.DEPLOY_URL }}
+          EXPECTED_SITE_ENV: ${{ steps.meta.outputs.kind }}
+        run: pnpm --filter @platform/tests exec playwright test --project=${{ steps.meta.outputs.brand }}
+
+      - name: Status result
+        if: always() && steps.meta.outputs.brand != ''
+        run: |
+          if [ "${{ steps.e2e.outcome }}" = "success" ]; then state=success; text="All checks passed on $DEPLOY_URL"
+          else state=failure; text="Checks failed on $DEPLOY_URL, open the run for details"; fi
+          gh api "repos/${{ github.repository }}/statuses/$SHA" -f state="$state" \
+            -f context="${{ steps.meta.outputs.context }}" -f target_url="$RUN_URL" -f description="${text:0:139}"
+
+      - uses: actions/upload-artifact@v7
+        if: failure() && steps.meta.outputs.brand != ''
+        with:
+          name: playwright-report-${{ steps.meta.outputs.brand }}
+          path: tests/playwright-report
+          retention-days: 7

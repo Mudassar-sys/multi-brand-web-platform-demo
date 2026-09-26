@@ -1,0 +1,65 @@
+name: production-checks
+
+# Vercel Deployment Checks: Vercel sends vercel.deployment.ready when a
+# deployment is built but not yet promoted. For production deployments this
+# workflow tests the new build at its own URL before the live domain moves
+# to it. Select the resulting "Vercel - <project>: production-checks" check
+# in each project's Deployment Checks settings.
+# repository_dispatch workflows only run from the default branch.
+on:
+  repository_dispatch:
+    types: ['vercel.deployment.ready']
+
+permissions:
+  contents: read
+  statuses: write
+
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+
+jobs:
+  production-checks:
+    # Deployment Checks only gate production; previews are covered by preview-checks.
+    if: github.event.client_payload.environment == 'production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Report status to the deployment's commit
+        uses: vercel/repository-dispatch/actions/status@v1
+        with:
+          name: 'Vercel - ${{ github.event.client_payload.project.name }}: production-checks'
+
+      - name: Work out the brand
+        id: meta
+        env:
+          PROJECT: ${{ github.event.client_payload.project.name }}
+          ENVIRONMENT: ${{ github.event.client_payload.environment }}
+        run: |
+          case "$PROJECT" in
+            *kestrel*) brand=kestrel ;;
+            *paintline*) brand=paintline ;;
+            *) brand="" ;;
+          esac
+          echo "brand=$brand" >> "$GITHUB_OUTPUT"
+          echo "environment=$ENVIRONMENT" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.client_payload.git.sha }}
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile && pnpm --filter @platform/tests exec playwright install --with-deps chromium
+
+      - name: Playwright against the new deployment
+        if: steps.meta.outputs.brand != ''
+        env:
+          BASE_URL: ${{ github.event.client_payload.url }}
+          EXPECTED_SITE_ENV: production
+        run: pnpm --filter @platform/tests exec playwright test --project=${{ steps.meta.outputs.brand }}

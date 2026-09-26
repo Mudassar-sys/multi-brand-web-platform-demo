@@ -1,0 +1,101 @@
+name: ci
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+  ASTRO_TELEMETRY_DISABLED: 1
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Work out which brands this PR affects
+        id: affected
+        run: node scripts/affected-brands.mjs "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}"
+
+      # Vercel skips brands a PR does not touch, so their preview-checks
+      # status would never arrive and the required check would block the PR.
+      # Report them as passed-because-not-affected right away. If Vercel does
+      # build that brand after all, preview-checks overwrites this status.
+      - name: Mark unaffected brands as not affected
+        if: steps.affected.outputs.unaffected != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for brand in ${{ steps.affected.outputs.unaffected }}; do
+            gh api "repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }}" \
+              -f state=success \
+              -f context="preview-checks/$brand" \
+              -f description="Not affected by this PR, so Vercel skipped this brand" \
+              -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          done
+
+      - name: Section catalogs (SECTIONS.md) are up to date
+        run: pnpm sections:check
+
+      - name: Build, astro check and unit tests (affected packages)
+        run: pnpm exec turbo run build check test --affected
+        env:
+          TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha }}
+
+      - name: Link check, kestrel (built HTML)
+        if: contains(steps.affected.outputs.affected, 'kestrel')
+        uses: lycheeverse/lychee-action@v2
+        with:
+          output: lychee/kestrel.md
+          args: >-
+            --no-progress
+            --root-dir ${{ github.workspace }}/apps/kestrel/.vercel/output/static
+            --index-files index.html
+            --exclude '^http://localhost'
+            --exclude 'googletagmanager\.com'
+            'apps/kestrel/.vercel/output/static/**/*.html'
+
+      - name: Link check, paintline (built HTML)
+        if: contains(steps.affected.outputs.affected, 'paintline')
+        uses: lycheeverse/lychee-action@v2
+        with:
+          output: lychee/paintline.md
+          args: >-
+            --no-progress
+            --root-dir ${{ github.workspace }}/apps/paintline/.vercel/output/static
+            --index-files index.html
+            --exclude '^http://localhost'
+            --exclude 'googletagmanager\.com'
+            'apps/paintline/.vercel/output/static/**/*.html'
+
+      - name: Tracking contract with a GTM container set
+        if: steps.affected.outputs.affected != ''
+        env:
+          PUBLIC_GTM_ID: GTM-CONTRACT
+        run: |
+          for brand in ${{ steps.affected.outputs.affected }}; do
+            pnpm --filter "@platform/$brand" build > /dev/null
+            node scripts/check-tracking-order.mjs "apps/$brand/.vercel/output/static"
+          done
