@@ -5,7 +5,7 @@
  */
 import { upload } from '@vercel/blob/client';
 import { ATTRIBUTION_KEYS, currentAttribution, trackLead } from '@platform/tracking/client';
-import { formatMegabytes, UPLOAD_CONTENT_TYPES, UPLOAD_MAX_BYTES } from './limits';
+import { formatMegabytes, UPLOAD_ACCESS, UPLOAD_CONTENT_TYPES, UPLOAD_MAX_BYTES } from './limits';
 import type { Receipt } from './receipt';
 
 type Json = Record<string, unknown>;
@@ -145,7 +145,7 @@ async function submit(form: HTMLFormElement): Promise<void> {
       if (progress) progress.hidden = false;
       try {
         const blob = await upload(`leads/${String(data.form_id)}/${safeFileName(file.name)}`, file, {
-          access: 'public',
+          access: UPLOAD_ACCESS,
           handleUploadUrl: form.dataset.uploadEndpoint ?? '/api/upload',
           clientPayload: JSON.stringify({ started_at: data.started_at, website: data.website, form_id: data.form_id }),
           onUploadProgress: ({ percentage }) => {

@@ -9,3 +9,10 @@ export const MAX_FORM_AGE_MS = 24 * 60 * 60 * 1000;
 export function formatMegabytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
+
+/**
+ * Must match the Blob store's access mode, which is fixed when the store is
+ * created. Private: uploaded files need a token to read, so customer
+ * photos are never publicly listed.
+ */
+export const UPLOAD_ACCESS = 'private' as const;

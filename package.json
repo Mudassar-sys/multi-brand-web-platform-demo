@@ -17,13 +17,14 @@
     "format": "prettier --write .",
     "dev:kestrel": "pnpm --filter @platform/kestrel dev",
     "dev:paintline": "pnpm --filter @platform/paintline dev",
-    "test:e2e": "pnpm --filter @platform/tests test"
+    "e2e": "pnpm --filter @platform/tests e2e"
   },
   "devDependencies": {
     "prettier": "3.9.9",
     "prettier-plugin-astro": "1.1.0",
     "tsx": "4.23.15",
-    "turbo": "2.11.4"
+    "turbo": "2.11.4",
+    "yaml": "2.9.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

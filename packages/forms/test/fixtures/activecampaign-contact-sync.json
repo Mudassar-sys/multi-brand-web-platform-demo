@@ -1,0 +1,11 @@
+{
+  "contact": {
+    "email": "jondoe@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "phone": "7223224241",
+    "fieldValues": [{ "field": "1", "value": "The Value for First Field" }],
+    "tags": ["customer", "newsletter"],
+    "lists": [{ "list": 3 }]
+  }
+}

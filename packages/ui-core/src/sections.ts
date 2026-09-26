@@ -50,6 +50,11 @@ export function defineSection<const T extends SectionDefinition>(definition: T):
   return definition;
 }
 
+/** JSON Schema of what an owner writes in YAML (defaults are optional). */
+export function sectionJsonSchema(definition: SectionDefinition): Record<string, any> {
+  return z.toJSONSchema(definition.schema, { io: 'input', unrepresentable: 'any' }) as Record<string, any>;
+}
+
 /**
  * Builds the page schema for one brand from its section definitions.
  * Rules enforced at build time:

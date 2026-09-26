@@ -1,0 +1,17 @@
+---
+import Layout from '@platform/brand-paintline/Layout.astro';
+import Button from '@platform/ui-core/primitives/Button.astro';
+import Container from '@platform/ui-core/primitives/Container.astro';
+import Heading from '@platform/ui-core/primitives/Heading.astro';
+import brand from '../../brand.config';
+import '../styles/global.css';
+---
+
+<Layout brand={brand} title="Page not found" description="The page you asked for does not exist. It may have moved when the site was rebuilt." noindex>
+  <Container width="default" class="py-24 sm:py-32">
+    <p class="font-eyebrow text-eyebrow text-accent-ink uppercase">Error 404</p>
+    <Heading level={1} size="xl" class="mt-4">This page is not here</Heading>
+    <p class="text-lead text-ink-muted mt-5 max-w-xl">It may have moved when the site was rebuilt. The home page links to everything.</p>
+    <Button href="/" size="lg" icon="arrow-right" class="mt-8">Go to the home page</Button>
+  </Container>
+</Layout>
