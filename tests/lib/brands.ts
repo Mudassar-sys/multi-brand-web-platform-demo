@@ -59,5 +59,8 @@ export function redirectsCsv(brand: Brand): string {
   return readFileSync(join(repoRoot, 'apps', brand, 'redirects.csv'), 'utf8');
 }
 
-/** Hosts that would mean a Google Ads conversion or remarketing hit. */
+/**
+ * URLs that would mean a Google Ads conversion or remarketing hit. Each pattern is listed in
+ * docs/SOURCES.md ("Google endpoints matched by the tracking tests") with its source.
+ */
 export const ADS_REQUEST = /googleadservices\.com|googleads\.g\.doubleclick\.net|\/pagead\/(conversion|viewthroughconversion)|google\.com\/ads\/ga-audiences/;
